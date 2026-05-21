@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyphælium — The Simple Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#faf7f0;color:#1e1a14;font-family:'DM Sans',sans-serif;font-size:17px;line-height:1.75;padding:0 0 80px;}
+header{background:#1a1208;padding:20px 40px;display:flex;align-items:center;gap:12px;}
+header h1{font-family:'Lora',serif;font-size:1.2rem;font-weight:400;color:#f4efe2;}
+header p{font-size:10px;color:#4caf80;text-transform:uppercase;letter-spacing:0.12em;margin-top:2px;}
+main{max-width:640px;margin:0 auto;padding:48px 32px 0;}
+h2{font-family:'Lora',serif;font-size:1.9rem;font-weight:400;color:#1e1a14;margin-bottom:10px;line-height:1.2;}
+.intro{font-size:1.05rem;color:#5a5040;font-style:italic;margin-bottom:52px;font-family:'Lora',serif;border-left:3px solid #2e7d52;padding-left:20px;}
+.qa{margin-bottom:40px;}
+.question{font-family:'Lora',serif;font-size:1.1rem;font-weight:500;color:#1e1a14;margin-bottom:12px;display:flex;align-items:flex-start;gap:12px;}
+.question::before{content:'Q';background:#1a1208;color:#4caf80;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;margin-top:2px;}
+.answer{color:#5a5040;font-weight:300;padding-left:38px;}
+.answer p{margin-bottom:10px;}
+.answer strong{color:#1e1a14;font-weight:500;}
+.big-step{background:#fff;border:1px solid #ede5d0;border-radius:10px;padding:24px 28px;margin-bottom:16px;}
+.big-step-num{font-size:2.5rem;font-family:'Lora',serif;font-style:italic;color:#c8892a;line-height:1;margin-bottom:8px;}
+.big-step h4{font-family:'Lora',serif;font-size:1.1rem;font-weight:500;color:#1e1a14;margin-bottom:8px;}
+.big-step p{color:#5a5040;font-size:0.95rem;font-weight:300;margin:0;}
+.highlight{background:#f0f7f0;border-radius:8px;padding:20px 24px;margin:28px 0;font-size:0.95rem;color:#2a4a2a;}
+.highlight strong{color:#1a3a1a;}
+hr{border:none;border-top:1px solid #ede5d0;margin:40px 0;}
+</style>
+</head>
+<body>
+<header>
+  <svg viewBox="0 0 32 32" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="16" cy="16" r="14" fill="#1a2e1a" stroke="#2e7d52" stroke-width="1.5"/>
+    <circle cx="16" cy="16" r="3.5" fill="#2e7d52"/>
+    <line x1="16" y1="12.5" x2="16" y2="6" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="16" y1="19.5" x2="16" y2="26" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="12.5" y1="16" x2="6" y2="16" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="19.5" y1="16" x2="26" y2="16" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+  </svg>
+  <div><h1>Hyphælium</h1><p>The Simple Guide</p></div>
+</header>
+
+<main>
+  <h2>Everything you need.<br>Nothing you don't.</h2>
+  <p class="intro">No technical knowledge required. If you can use email, you can use Hyphælium. This guide answers the only questions that actually matter.</p>
+
+  <div class="qa">
+    <div class="question">What is Hyphælium actually for?</div>
+    <div class="answer">
+      <p>You use AI assistants — Claude, ChatGPT, Gemini and others. They are brilliant at helping you think, research and write. But each conversation lives in its own little bubble. When you finish and close the tab, finding it again later is a headache.</p>
+      <p>Hyphælium fixes that. It lets you <strong>bookmark any AI conversation with one click</strong> — so you can always find your way back to it. That's the whole thing.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">How does it work in practice?</div>
+    <div class="answer">
+      <p>You are on Claude, having a useful conversation about, say, planning a project. At some point you think <em>"I'll want to come back to this."</em></p>
+      <p>You see a small green circle in the bottom right corner of the page. <strong>You click it once.</strong></p>
+      <p>Later — today, next week, next month — you open your Hyphælium vault. You see that conversation listed, with the date, the topic, and a link. You click the link. You are back in that conversation instantly.</p>
+      <p>That is all there is to it.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Is my data safe? Who can see my conversations?</div>
+    <div class="answer">
+      <p>Hyphælium does <strong>not</strong> read or store your conversations. It only saves:</p>
+      <p>• The name of the AI platform you were using<br>
+         • A short label taken from the conversation title<br>
+         • The web address of that conversation<br>
+         • The date and time</p>
+      <p><strong>Nobody can read your conversations through Hyphælium — because Hyphælium never sees them.</strong> Your actual conversations stay exactly where they are — on Claude's servers, ChatGPT's servers, and so on. Hyphælium just holds a signpost.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2 style="margin-bottom:24px">Using it — three things to know</h2>
+
+  <div class="big-step">
+    <div class="big-step-num">1</div>
+    <h4>The green circle is your only button</h4>
+    <p>When you are on any supported AI platform in Chrome, a small dark green circle sits in the bottom right corner of the page. Click it when a conversation is worth keeping. That is your only job.</p>
+  </div>
+
+  <div class="big-step">
+    <div class="big-step-num">2</div>
+    <h4>Your vault is your record</h4>
+    <p>Open the file called <strong>hyphaelium-vault.html</strong> in Chrome to see all your saved conversations, organised by date. Click any one to go straight back to it.</p>
+  </div>
+
+  <div class="big-step">
+    <div class="big-step-num">3</div>
+    <h4>It only works in Chrome</h4>
+    <p>Hyphælium is a Chrome extension. It works in Google Chrome and Microsoft Edge. If you use a different browser, ask about the Tampermonkey version which works almost everywhere.</p>
+  </div>
+
+  <div class="highlight">
+    <strong>The keyboard shortcut:</strong> If you prefer not to use your mouse, press <strong>Ctrl + Shift + H</strong> (on Windows) or <strong>Cmd + Shift + H</strong> (on a Mac) to save a breadcrumb without clicking anything.
+  </div>
+
+  <hr>
+
+  <div class="qa">
+    <div class="question">The amber glow — what does it mean?</div>
+    <div class="answer">
+      <p>Sometimes the green circle turns amber. This means the AI you are talking to has mentioned that its knowledge has a limit — something like <em>"you may want to verify this"</em> or <em>"as of my last update."</em></p>
+      <p>Hyphælium notices this and gently lets you know. It is not a problem — it is useful information. It simply means the AI is being honest about the edges of what it knows.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Something isn't working — what do I do?</div>
+    <div class="answer">
+      <p><strong>Green circle not appearing?</strong> Make sure you are in Chrome (not Firefox, Safari or another browser). Try refreshing the page.</p>
+      <p><strong>The vault isn't opening?</strong> Check that you have entered your Supabase credentials correctly. If you are not sure what those are, the setup guide has step-by-step instructions.</p>
+      <p><strong>Still stuck?</strong> Email us at <strong>privacy@hyphaelium.com</strong> — we will help you sort it out.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">What does Hyphælium mean?</div>
+    <div class="answer">
+      <p>Hyphæ are the thread-like strands of a fungal network — the invisible system beneath a forest that connects trees, carries nutrients between them, and enables the whole forest to thrive as one. No single tree could survive without it, but none of them see it.</p>
+      <p>Hyphælium is named after this network because it does the same thing for your thinking — connecting your ideas across different places, quietly and without fuss, so that nothing is lost.</p>
+      <p><em>The human thinks. Hyphælium carries.</em></p>
+    </div>
+  </div>
+
+</main>
+
+  <!-- Copyright notice -->
+  <div style="text-align:center;padding:24px;font-family:'Courier New',monospace;font-size:10px;color:#3a5c3a;border-top:1px solid #1e3a1e;margin-top:40px;">
+    © 2026 Hyphælium. All rights reserved. · 
+    The Forward and all original text are protected by copyright. · 
+    Hyphælium is a registered trademark (pending).
+  </div>
+</body>
+</html>

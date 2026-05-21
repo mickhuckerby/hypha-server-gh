@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<!-- © 2026 Hyphælium. All rights reserved. privacy@hyphaelium.com -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyphælium — The Art of the Query</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#faf7f0;color:#1e1a14;font-family:'DM Sans',sans-serif;font-size:17px;line-height:1.75;padding:0 0 80px;}
+
+/* Header */
+header{background:#0e0b06;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-logo{display:flex;align-items:center;gap:12px;}
+.hdr-logo h1{font-family:'Lora',serif;font-size:1.2rem;font-weight:400;font-style:italic;color:#f4efe2;}
+.hdr-logo p{font-size:0.65rem;color:#4caf80;font-family:'DM Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;margin-top:2px;}
+.hdr-back{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#3a5c3a;text-decoration:none;transition:color 0.2s;}
+.hdr-back:hover{color:#4caf80;}
+
+/* Hero */
+.hero{background:#0e0b06;padding:72px 48px 80px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(46,92,46,0.15) 0%,transparent 60%);pointer-events:none;}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1;}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#4caf80;margin-bottom:20px;opacity:0.7;}
+.hero h2{font-family:'Lora',serif;font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:400;font-style:italic;color:#f4efe2;line-height:1.12;margin-bottom:24px;letter-spacing:-0.01em;}
+.hero h2 em{color:#c4899a;font-style:italic;}
+.hero-lead{font-size:1.05rem;font-weight:300;color:rgba(244,239,226,0.68);line-height:1.82;max-width:580px;}
+
+/* Main content */
+main{max-width:720px;margin:0 auto;padding:64px 48px 0;}
+
+/* Chapter markers */
+.chapter{margin-bottom:72px;}
+.chapter-num{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#9a8e7a;margin-bottom:12px;display:flex;align-items:center;gap:14px;}
+.chapter-num::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#d4c9b0,transparent);}
+
+h3{font-family:'Lora',serif;font-size:1.5rem;font-weight:500;color:#1e1a14;margin-bottom:18px;line-height:1.3;}
+h3 em{font-style:italic;color:#2e5c2e;}
+
+p{color:#5a5040;margin-bottom:18px;font-weight:300;line-height:1.82;}
+p strong{color:#1e1a14;font-weight:500;}
+p em{color:#3d5c3d;font-style:italic;}
+
+/* The key principle callout */
+.principle{background:#fff;border-left:3px solid #2e5c2e;padding:22px 28px;border-radius:0 8px 8px 0;margin:28px 0;}
+.principle p{color:#1e1a14;margin:0;font-size:1rem;line-height:1.75;}
+.principle p strong{color:#1e3a1e;}
+
+/* The contrast box — bad vs good */
+.contrast{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0;}
+.contrast-panel{border-radius:8px;padding:22px 24px;}
+.contrast-panel.bad{background:#fdf2f0;border:1px solid rgba(239,68,68,0.15);}
+.contrast-panel.good{background:#f0f7f0;border:1px solid rgba(46,125,82,0.2);}
+.contrast-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px;}
+.bad .contrast-label{color:rgba(180,60,60,0.6);}
+.good .contrast-label{color:rgba(46,125,82,0.7);}
+.contrast-panel p{font-size:0.9rem;color:#3a3030;margin:0;line-height:1.65;font-style:italic;}
+.good p{color:#1a3a1a;}
+
+/* The template box */
+.template{background:#1a1208;border-radius:8px;padding:24px 28px;margin:28px 0;}
+.template-label{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:#4caf80;opacity:0.7;margin-bottom:12px;}
+.template p{font-family:'DM Mono',monospace;font-size:0.82rem;color:#c8e6c9;margin:0;line-height:1.75;font-weight:300;}
+.template p em{color:#e8a840;font-style:normal;}
+
+/* Platform tags */
+.platform-note{display:inline-flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:12px;margin:0 4px;}
+.claude{background:rgba(201,100,66,0.1);color:#c96442;border:1px solid rgba(201,100,66,0.2);}
+.chatgpt{background:rgba(16,163,127,0.1);color:#10a37f;border:1px solid rgba(16,163,127,0.2);}
+.perplexity{background:rgba(155,138,251,0.1);color:#9b8afb;border:1px solid rgba(155,138,251,0.2);}
+.gemini{background:rgba(74,144,226,0.1);color:#4a90e2;border:1px solid rgba(74,144,226,0.2);}
+
+/* Tips list */
+.tips{margin:20px 0 28px;}
+.tip-item{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid #ede5d0;}
+.tip-item:last-child{border-bottom:none;}
+.tip-num{font-family:'Lora',serif;font-size:1.1rem;font-style:italic;color:#c4899a;flex-shrink:0;width:24px;padding-top:2px;}
+.tip-body h4{font-family:'Lora',serif;font-size:1rem;font-weight:500;color:#1e1a14;margin-bottom:5px;}
+.tip-body p{font-size:0.9rem;color:#5a5040;margin:0;line-height:1.65;font-weight:300;}
+
+/* The quick reference card */
+.ref-card{background:#0e0b06;border-radius:10px;padding:36px 40px;margin:48px 0;}
+.ref-card h4{font-family:'Lora',serif;font-size:1.1rem;font-weight:400;font-style:italic;color:#f4efe2;margin-bottom:24px;}
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.ref-item{border-left:2px solid #2e5c2e;padding-left:14px;}
+.ref-item strong{display:block;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:#4caf80;margin-bottom:6px;}
+.ref-item p{font-size:0.85rem;color:rgba(244,239,226,0.65);margin:0;line-height:1.6;font-weight:300;font-style:italic;}
+
+/* Platform guide section */
+.platform-guide{background:#fff;border:1px solid #ede5d0;border-radius:8px;padding:24px 28px;margin:20px 0;}
+.platform-guide-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.platform-guide-hdr h4{font-family:'Lora',serif;font-size:1rem;font-weight:500;color:#1e1a14;}
+.platform-guide p{font-size:0.9rem;color:#5a5040;margin-bottom:10px;font-weight:300;line-height:1.65;}
+.platform-guide p:last-child{margin-bottom:0;}
+.platform-guide em{color:#3d5c3d;}
+
+/* Pull quote */
+.pull{text-align:center;padding:40px 0;margin:20px 0;border-top:1px solid #ede5d0;border-bottom:1px solid #ede5d0;}
+.pull p{font-family:'Lora',serif;font-size:1.3rem;font-style:italic;color:#1e1a14;font-weight:400;line-height:1.55;max-width:560px;margin:0 auto;}
+.pull p em{color:#2e5c2e;}
+
+/* Footer */
+.doc-footer{margin-top:64px;padding-top:24px;border-top:1px solid #ede5d0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.doc-footer p{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:#9a8e7a;}
+.doc-footer a{color:#2e5c2e;text-decoration:none;}
+
+@media(max-width:700px){
+  main{padding:48px 24px 0;}
+  header{padding:18px 24px;}
+  .hero{padding:52px 24px 60px;}
+  .contrast{grid-template-columns:1fr;}
+  .ref-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-logo">
+    <svg viewBox="0 0 32 32" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#1a2e1a" stroke="#2e7d52" stroke-width="1.5"/>
+      <circle cx="16" cy="16" r="3.5" fill="#2e7d52"/>
+      <line x1="16" y1="12.5" x2="16" y2="6" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="16" y1="19.5" x2="16" y2="26" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="12.5" y1="16" x2="6" y2="16" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="19.5" y1="16" x2="26" y2="16" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+    </svg>
+    <div><h1>Hyphælium</h1><p>Query Craft Guide</p></div>
+  </div>
+  <a class="hdr-back" href="/">← Back to Hyphælium</a>
+</header>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">The art of the query</div>
+    <h2>Ask better.<br>Think <em>further.</em></h2>
+    <p class="hero-lead">
+      The gap between a mediocre AI response and a genuinely useful one
+      is almost never the AI. It is the question. This guide is about
+      closing that gap — permanently.
+    </p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ── CHAPTER 1 ── -->
+  <div class="chapter">
+    <div class="chapter-num">01</div>
+    <h3>Why most queries <em>underperform</em></h3>
+
+    <p>
+      You are sitting across from one of the most capable thinking partners
+      in human history. It has read more than you will read in a thousand
+      lifetimes. It can reason, synthesise, challenge and build. And you
+      have just asked it something it could answer in its sleep.
+    </p>
+
+    <p>
+      This is not a criticism — it is simply how we were taught to search.
+      Google rewarded brevity. Three keywords, press enter, scan the results.
+      That habit transferred directly to AI platforms — and it is costing you
+      most of the value these tools can deliver.
+    </p>
+
+    <p>
+      An AI platform is not a search engine. It is a conversation partner.
+      And the quality of any conversation is determined by the quality of
+      what you bring to it.
+    </p>
+
+    <div class="principle">
+      <p><strong>The fundamental principle:</strong> An AI responds to exactly what you ask.
+      Not what you meant. Not what you needed. What you asked.
+      The more precisely you articulate your actual need, the more precisely
+      it can serve it.</p>
+    </div>
+
+    <p>
+      The good news — this is a learnable skill. Not a technical one.
+      A thinking one. And once you have it, you will never query an AI
+      the same way again.
+    </p>
+  </div>
+
+  <!-- ── CHAPTER 2 ── -->
+  <div class="chapter">
+    <div class="chapter-num">02</div>
+    <h3>The four elements of a <em>well-formed query</em></h3>
+
+    <p>
+      Every genuinely effective query contains four things — not always
+      explicitly, but always present in some form. Miss one and the
+      response drifts. Miss two and you are back to guessing.
+    </p>
+
+    <div class="tips">
+
+      <div class="tip-item">
+        <div class="tip-num">1</div>
+        <div class="tip-body">
+          <h4>Context — what situation are you in?</h4>
+          <p>The AI knows nothing about you or your circumstances unless you tell it.
+          Your role, your audience, your constraints, your starting point —
+          all of this shapes what a useful answer looks like.
+          Two people asking the same question may need completely different answers.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">2</div>
+        <div class="tip-body">
+          <h4>The actual question — not the presenting question</h4>
+          <p>There is the question you typed and the question you actually needed answered.
+          Often they are not the same. Before you query, ask yourself:
+          <em>what would I do with a perfect answer to this?</em>
+          That question is usually closer to what you actually need.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">3</div>
+        <div class="tip-body">
+          <h4>Format — what does useful look like?</h4>
+          <p>A paragraph, a list, a table, a draft, a critique, a comparison,
+          a step-by-step guide. The AI will choose a format if you do not —
+          and it may choose wrong. Specifying the format you need is not
+          prescriptive — it is efficient.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">4</div>
+        <div class="tip-body">
+          <h4>Constraints — what would make the answer wrong?</h4>
+          <p>Word limits, audience assumptions, things to avoid, facts already known,
+          approaches already tried. These are not optional extras — they are
+          the difference between an answer that works in your situation
+          and one that works in theory.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CHAPTER 3 ── -->
+  <div class="chapter">
+    <div class="chapter-num">03</div>
+    <h3>Seeing the difference — <em>before and after</em></h3>
+
+    <p>
+      The fastest way to understand query craft is to see it working.
+      Here are four common professional situations — the query most people
+      write, and the query that actually gets what they need.
+    </p>
+
+    <!-- Example 1 -->
+    <p><strong>Situation: You need to understand a complex topic quickly</strong></p>
+    <div class="contrast">
+      <div class="contrast-panel bad">
+        <div class="contrast-label">❌ Underperforms</div>
+        <p>"Explain machine learning."</p>
+      </div>
+      <div class="contrast-panel good">
+        <div class="contrast-label">✓ Works</div>
+        <p>"Explain machine learning to someone with a business background but no technical training. Focus on how organisations actually use it rather than how it works mathematically. Use one concrete example from financial services."</p>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <p><strong>Situation: You need to write something persuasive</strong></p>
+    <div class="contrast">
+      <div class="contrast-panel bad">
+        <div class="contrast-label">❌ Underperforms</div>
+        <p>"Write an email asking my manager for a budget increase."</p>
+      </div>
+      <div class="contrast-panel good">
+        <div class="contrast-label">✓ Works</div>
+        <p>"Write a professional email to a senior manager requesting a 15% budget increase for a marketing campaign. The manager is data-driven and sceptical of speculative projections. Lead with ROI evidence from last quarter. Keep it under 200 words. Tone: confident but not pushy."</p>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <p><strong>Situation: You need help with a decision</strong></p>
+    <div class="contrast">
+      <div class="contrast-panel bad">
+        <div class="contrast-label">❌ Underperforms</div>
+        <p>"Should I use Python or JavaScript?"</p>
+      </div>
+      <div class="contrast-panel good">
+        <div class="contrast-label">✓ Works</div>
+        <p>"I am building a data pipeline that processes CSV files and outputs to a dashboard. My team has three developers — two with JavaScript backgrounds, one with Python. We need to launch in six weeks. What are the genuine trade-offs between Python and JavaScript for this specific situation? Do not recommend based on general popularity — base it on these constraints."</p>
+      </div>
+    </div>
+
+    <!-- Example 4 -->
+    <p><strong>Situation: You need critical feedback</strong></p>
+    <div class="contrast">
+      <div class="contrast-panel bad">
+        <div class="contrast-label">❌ Underperforms</div>
+        <p>"What do you think of my business plan?"</p>
+      </div>
+      <div class="contrast-panel good">
+        <div class="contrast-label">✓ Works</div>
+        <p>"I am going to share a business plan. Before you respond, I want you to identify the three weakest assumptions I am making — not the strongest points. I need honest critique, not encouragement. After identifying the weaknesses, suggest what evidence or research would either validate or disprove each one."</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHAPTER 4 ── -->
+  <div class="chapter">
+    <div class="chapter-num">04</div>
+    <h3>The query <em>template</em> — a starting point</h3>
+
+    <p>
+      You do not always need all four elements. A simple factual question
+      needs none of them. But when the stakes are higher — when you need
+      something genuinely useful rather than merely adequate — this
+      structure works reliably.
+    </p>
+
+    <div class="template">
+      <div class="template-label">Query template</div>
+      <p>
+        I am <em>[your role or situation]</em>.<br>
+        I need <em>[what you actually need, not the presenting question]</em>.<br>
+        The audience is <em>[who will use this answer]</em>.<br>
+        Constraints: <em>[word limit / tone / things to avoid / what you already know]</em>.<br>
+        Format: <em>[paragraph / list / table / draft / critique]</em>.
+      </p>
+    </div>
+
+    <p>
+      You will not use this template verbatim — that is not the point.
+      The point is to run through these five elements mentally before
+      you query. It takes ten seconds. The improvement in response
+      quality is immediate and consistent.
+    </p>
+
+    <div class="pull">
+      <p>The AI is not holding back a better answer.
+      It is waiting for a better <em>question.</em></p>
+    </div>
+  </div>
+
+  <!-- ── CHAPTER 5 ── -->
+  <div class="chapter">
+    <div class="chapter-num">05</div>
+    <h3>Choosing the right platform for <em>the right question</em></h3>
+
+    <p>
+      Different AI platforms have different strengths. Part of query craft
+      is knowing not just how to ask — but where to ask.
+      This is precisely where Hyphælium earns its place — helping you
+      track which platform served which kind of thinking, so you can
+      route your questions more deliberately over time.
+    </p>
+
+    <div class="platform-guide">
+      <div class="platform-guide-hdr">
+        <span class="platform-note claude">Claude</span>
+        <h4>Best for depth, nuance and long-form reasoning</h4>
+      </div>
+      <p>Claude handles complexity well and maintains coherence across very long conversations. It is particularly strong at <em>analytical thinking, structured writing, ethical reasoning and holding multiple perspectives simultaneously.</em></p>
+      <p>Use Claude when the question requires sustained reasoning rather than a quick answer — when you want a thinking partner, not just an information retrieval system.</p>
+    </div>
+
+    <div class="platform-guide">
+      <div class="platform-guide-hdr">
+        <span class="platform-note chatgpt">ChatGPT</span>
+        <h4>Best for breadth, creativity and drafting</h4>
+      </div>
+      <p>ChatGPT has an enormous range and handles creative tasks, brainstorming and first drafts particularly well. Its plugin and tool ecosystem is the most mature of any platform.</p>
+      <p>Use ChatGPT when you need <em>volume of ideas, creative variation, or a capable first draft</em> that you will then refine elsewhere.</p>
+    </div>
+
+    <div class="platform-guide">
+      <div class="platform-guide-hdr">
+        <span class="platform-note perplexity">Perplexity</span>
+        <h4>Best for current information and sourced research</h4>
+      </div>
+      <p>Perplexity searches the live web and cites its sources. It is the right choice when recency matters — market data, current events, recent research, regulatory changes.</p>
+      <p>Use Perplexity when the question has a <em>time dimension</em> — when "as of this week" matters more than "in principle." Watch for the amber boundary signal in Hyphælium — it often means Perplexity is the next step.</p>
+    </div>
+
+    <div class="platform-guide">
+      <div class="platform-guide-hdr">
+        <span class="platform-note gemini">Gemini</span>
+        <h4>Best for multimodal tasks and Google ecosystem integration</h4>
+      </div>
+      <p>Gemini handles images, documents and data well alongside text. Its integration with Google Workspace makes it particularly useful for tasks that involve existing documents or spreadsheets.</p>
+      <p>Use Gemini when your question involves <em>interpreting visual information, working with existing documents</em>, or connecting AI assistance to your Google tools.</p>
+    </div>
+  </div>
+
+  <!-- ── CHAPTER 6 ── -->
+  <div class="chapter">
+    <div class="chapter-num">06</div>
+    <h3>Seven habits of <em>effective queriers</em></h3>
+
+    <div class="tips">
+
+      <div class="tip-item">
+        <div class="tip-num">1</div>
+        <div class="tip-body">
+          <h4>Ask for the reasoning, not just the answer</h4>
+          <p>Add "explain your reasoning" or "walk me through how you reached this" to any query where you need to trust or act on the response. You will catch errors, understand limitations, and learn something in the process.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">2</div>
+        <div class="tip-body">
+          <h4>Tell it what you already know</h4>
+          <p>Saying "I already understand X — focus on Y" saves time and signals your level. The AI calibrates its response to your stated knowledge. Use this to skip the preamble and go straight to the substance.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">3</div>
+        <div class="tip-body">
+          <h4>Ask it to challenge you</h4>
+          <p>"What am I missing?" and "What is the strongest argument against this?" are two of the most valuable queries you can make. An AI that only confirms your thinking is a mirror. You need a window.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">4</div>
+        <div class="tip-body">
+          <h4>Iterate rather than restart</h4>
+          <p>A good response rarely arrives fully formed on the first query. Build on it. "Go deeper on the third point." "Rewrite this for a non-technical audience." "Now give me the counterargument." The conversation is the product.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">5</div>
+        <div class="tip-body">
+          <h4>Specify what good looks like</h4>
+          <p>Share an example of the kind of response you want — a writing style, a level of detail, a structure you admire. "In the style of a McKinsey memo" or "as a five-point briefing note" gives the AI a target to aim at rather than a blank canvas.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">6</div>
+        <div class="tip-body">
+          <h4>Notice the boundary signal — and use it</h4>
+          <p>When an AI says "as of my last update" or "you may want to verify this" — it is being honest about the edge of its reliable knowledge. Do not ignore this. It is a navigation signal. Move to Perplexity for current information, or verify independently before acting.</p>
+        </div>
+      </div>
+
+      <div class="tip-item">
+        <div class="tip-num">7</div>
+        <div class="tip-body">
+          <h4>Save the threads that go somewhere</h4>
+          <p>The best queries open into conversations that develop across multiple exchanges. When a thread reaches something genuinely useful — a reframing, an insight, a draft worth keeping — save it. You will want to return to it. That is precisely what Hyphælium is for.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── QUICK REFERENCE ── -->
+  <div class="ref-card">
+    <h4>Quick reference — the essentials</h4>
+    <div class="ref-grid">
+      <div class="ref-item">
+        <strong>Before you query</strong>
+        <p>What do I actually need from this answer? Who is it for? What would make it wrong?</p>
+      </div>
+      <div class="ref-item">
+        <strong>Add context</strong>
+        <p>Your role, your situation, your audience, your constraints. The AI knows none of this unless you say it.</p>
+      </div>
+      <div class="ref-item">
+        <strong>Specify the format</strong>
+        <p>Paragraph, list, table, draft, critique, comparison. Choose before you ask.</p>
+      </div>
+      <div class="ref-item">
+        <strong>Ask for reasoning</strong>
+        <p>"Walk me through how you reached this." Trust but verify — especially on consequential decisions.</p>
+      </div>
+      <div class="ref-item">
+        <strong>Iterate, don't restart</strong>
+        <p>"Go deeper." "For a non-technical audience." "Now the counterargument." Build on what works.</p>
+      </div>
+      <div class="ref-item">
+        <strong>Watch the boundary signal</strong>
+        <p>Amber icon in Hyphælium = knowledge boundary. Move to Perplexity or verify independently.</p>
+      </div>
+      <div class="ref-item">
+        <strong>Choose the right platform</strong>
+        <p>Claude for depth. ChatGPT for breadth. Perplexity for current. Gemini for documents.</p>
+      </div>
+      <div class="ref-item">
+        <strong>Save what matters</strong>
+        <p>When a thread arrives somewhere useful, click the green icon. You will want to return.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <p>© 2026 Hyphælium · <a href="/terms.html">Terms</a> · <a href="/privacy-policy.html">Privacy</a></p>
+    <p>The human thinks. Hyphælium carries.</p>
+  </div>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<!-- Copyright 2026 Hyphælium. All rights reserved. privacy@hyphaelium.com -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyphælium — Subscribe</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#f5f2eb;color:#1a2744;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;min-height:100vh;}
+header{background:#1a2744;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-logo{display:flex;align-items:center;gap:12px;}
+.hdr-logo h1{font-family:'Lora',serif;font-size:1.2rem;font-weight:400;font-style:italic;color:#f5f2eb;}
+.hdr-logo p{font-size:0.65rem;color:#4a80c4;font-family:'DM Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;margin-top:2px;}
+.hdr-back{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#4a80c4;text-decoration:none;}
+.hdr-back:hover{color:#b8d0f0;}
+
+.page{max-width:520px;margin:0 auto;padding:52px 28px 80px;}
+
+/* Plan selector */
+.plan-title{font-family:'Lora',serif;font-size:1rem;font-style:italic;color:#6a7a94;margin-bottom:12px;}
+.plans{display:flex;flex-direction:column;gap:8px;margin-bottom:32px;}
+.plan-opt{background:#fff;border:1px solid #dde3ed;border-radius:8px;padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.2s;}
+.plan-opt:hover{border-color:#b8d0f0;background:#f0f5fc;}
+.plan-opt.selected{border-color:#2563a8;background:#e8f0fb;box-shadow:0 0 0 2px rgba(37,99,168,0.12);}
+.plan-name{font-weight:500;color:#1a2744;font-size:0.95rem;}
+.plan-desc{font-size:0.78rem;color:#6a7a94;margin-top:2px;font-weight:300;}
+.plan-price{font-family:'Lora',serif;font-size:1.1rem;font-style:italic;color:#2563a8;font-weight:400;white-space:nowrap;margin-left:16px;}
+
+/* Form sections */
+.section{margin-bottom:28px;}
+.section-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#9aaabb;margin-bottom:14px;}
+.field{margin-bottom:12px;}
+.field label{display:block;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:#6a7a94;margin-bottom:5px;}
+.field input{width:100%;background:#fff;border:1px solid #dde3ed;border-radius:6px;padding:11px 14px;font-family:'DM Sans',sans-serif;font-size:0.95rem;color:#1a2744;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.field input:focus{border-color:#2563a8;box-shadow:0 0 0 3px rgba(37,99,168,0.08);}
+.field input::placeholder{color:#b8c4d4;}
+
+/* Stripe Elements container */
+.stripe-field{background:#fff;border:1px solid #dde3ed;border-radius:6px;padding:11px 14px;transition:border-color 0.2s,box-shadow 0.2s;}
+.stripe-field.focused{border-color:#2563a8;box-shadow:0 0 0 3px rgba(37,99,168,0.08);}
+.stripe-note{font-size:0.75rem;color:#9aaabb;margin-top:8px;display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;letter-spacing:0.04em;}
+.stripe-note svg{flex-shrink:0;}
+
+/* Pay button */
+.btn-pay{width:100%;background:#1a2744;color:#fff;border:none;border-radius:7px;padding:15px;font-family:'Lora',serif;font-size:1.05rem;font-style:italic;letter-spacing:0.06em;cursor:pointer;transition:background 0.2s,transform 0.15s,box-shadow 0.2s;margin-top:8px;position:relative;}
+.btn-pay:hover:not(:disabled){background:#2e4070;transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,39,68,0.2);}
+.btn-pay:disabled{opacity:0.65;cursor:not-allowed;transform:none;}
+
+/* Status messages */
+.msg{padding:12px 16px;border-radius:6px;font-size:0.88rem;margin-top:14px;display:none;line-height:1.5;}
+.msg.ok {background:rgba(46,125,82,0.08);color:#1e5c2e;border:1px solid rgba(46,125,82,0.2);display:block;}
+.msg.err{background:rgba(200,89,42,0.06);color:#8b3a1a;border:1px solid rgba(200,89,42,0.18);display:block;}
+.msg.info{background:#e8f0fb;color:#1a3a6a;border:1px solid #b8d0f0;display:block;}
+
+/* Summary box */
+.summary{background:#fff;border:1px solid #dde3ed;border-radius:8px;padding:18px 22px;margin-bottom:28px;}
+.summary-row{display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;}
+.summary-row + .summary-row{margin-top:8px;padding-top:8px;border-top:1px solid #dde3ed;}
+.summary-label{color:#6a7a94;font-weight:300;}
+.summary-value{color:#1a2744;font-weight:500;}
+.summary-total .summary-label{font-weight:500;color:#1a2744;}
+.summary-total .summary-value{font-family:'Lora',serif;font-size:1.1rem;font-style:italic;color:#2563a8;}
+
+/* Success screen */
+#screen-success{display:none;text-align:center;padding:40px 0;}
+.success-icon{width:64px;height:64px;background:#f0f9f4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:1.8rem;}
+#screen-success h2{font-family:'Lora',serif;font-size:1.6rem;font-weight:400;font-style:italic;color:#1a2744;margin-bottom:12px;}
+#screen-success p{color:#4a5a80;font-weight:300;margin-bottom:8px;line-height:1.7;}
+.next-steps{background:#fff;border:1px solid #dde3ed;border-radius:8px;padding:20px 24px;margin-top:28px;text-align:left;}
+.next-step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid #f0f4f8;align-items:flex-start;}
+.next-step:last-child{border-bottom:none;}
+.next-step-num{width:26px;height:26px;border-radius:50%;background:#1a2744;color:#b8d0f0;font-family:'Lora',serif;font-size:0.82rem;font-style:italic;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.next-step-text{font-size:0.9rem;color:#1a2744;font-weight:300;line-height:1.6;}
+.next-step-text strong{font-weight:500;}
+.btn-install{display:inline-block;background:#2563a8;color:#fff;text-decoration:none;padding:13px 32px;border-radius:6px;font-family:'Lora',serif;font-size:0.95rem;font-style:italic;margin-top:24px;transition:background 0.2s;}
+.btn-install:hover{background:#4a80c4;}
+
+/* Loading spinner */
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+@media(max-width:540px){.page{padding:36px 18px 60px;}.plans{gap:6px;}.plan-opt{padding:12px 14px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-logo">
+    <svg viewBox="0 0 32 32" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#e8f0fb" stroke="#2563a8" stroke-width="1.5"/>
+      <circle cx="16" cy="16" r="3.5" fill="#2563a8"/>
+      <line x1="16" y1="12.5" x2="16" y2="6"  stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="16" y1="19.5" x2="16" y2="26" stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="12.5" y1="16" x2="6"  y2="16" stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="19.5" y1="16" x2="26" y2="16" stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+    </svg>
+    <div><h1>Hyphælium</h1><p>Subscribe</p></div>
+  </div>
+  <a class="hdr-back" href="https://hyphaelium.com">← Back</a>
+</header>
+
+<div class="page">
+
+  <!-- Payment screen -->
+  <div id="screen-payment">
+
+    <!-- Plan selector -->
+    <div class="section">
+      <div class="section-label">Choose your plan</div>
+      <div class="plans">
+        <div class="plan-opt selected" data-plan="personal" onclick="selectPlan('personal')">
+          <div>
+            <div class="plan-name">Personal</div>
+            <div class="plan-desc">One person · unlimited breadcrumbs</div>
+          </div>
+          <div class="plan-price">99p/month</div>
+        </div>
+        <div class="plan-opt" data-plan="small_team" onclick="selectPlan('small_team')">
+          <div>
+            <div class="plan-name">Small Team</div>
+            <div class="plan-desc">Up to 5 people · under £1 each</div>
+          </div>
+          <div class="plan-price">£4.99/month</div>
+        </div>
+        <div class="plan-opt" data-plan="team" onclick="selectPlan('team')">
+          <div>
+            <div class="plan-name">Team</div>
+            <div class="plan-desc">Up to 15 people · under 67p each</div>
+          </div>
+          <div class="plan-price">£9.99/month</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account details -->
+    <div class="section">
+      <div class="section-label">Your account</div>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Choose a password</label>
+        <input type="password" id="password" placeholder="At least 8 characters" autocomplete="new-password">
+      </div>
+    </div>
+
+    <!-- Payment details -->
+    <div class="section">
+      <div class="section-label">Payment</div>
+      <div class="field">
+        <label>Card details</label>
+        <div class="stripe-field" id="card-element"></div>
+        <div class="stripe-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+          Payment processed securely by Stripe. Hyphælium never sees your card details.
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary" id="summary">
+      <div class="summary-row">
+        <span class="summary-label">Plan</span>
+        <span class="summary-value" id="sum-plan">Personal</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Billed</span>
+        <span class="summary-value">Monthly · cancel anytime</span>
+      </div>
+      <div class="summary-row summary-total">
+        <span class="summary-label">Total today</span>
+        <span class="summary-value" id="sum-price">99p</span>
+      </div>
+    </div>
+
+    <button class="btn-pay" id="btn-pay" onclick="handlePay()">
+      Subscribe to Hyphælium →
+    </button>
+
+    <div class="msg" id="msg"></div>
+
+  </div>
+
+  <!-- Success screen -->
+  <div id="screen-success">
+    <div class="success-icon">🌿</div>
+    <h2>Welcome to Hyphælium</h2>
+    <p>Your account is ready. A welcome email is on its way to <strong id="success-email"></strong></p>
+    <p style="font-size:0.85rem;color:#9aaabb;font-style:italic;">The human thinks. Hyphælium carries.</p>
+
+    <div class="next-steps">
+      <div class="next-step">
+        <div class="next-step-num">1</div>
+        <div class="next-step-text"><strong>Install Hyphælium</strong> — drag the bookmarklet to your browser bar. Works in Chrome, Firefox, Safari and Edge.</div>
+      </div>
+      <div class="next-step">
+        <div class="next-step-num">2</div>
+        <div class="next-step-text"><strong>Go to any AI platform</strong> — Claude, ChatGPT, Gemini or Copilot. Start a conversation.</div>
+      </div>
+      <div class="next-step">
+        <div class="next-step-num">3</div>
+        <div class="next-step-text"><strong>Click your Hyphælium bookmark</strong> when the conversation matters. One click. Your breadcrumb is saved.</div>
+      </div>
+      <div class="next-step">
+        <div class="next-step-num">4</div>
+        <div class="next-step-text"><strong>Open your vault</strong> at any time to see your complete trail of thought — searchable, clickable, always there.</div>
+      </div>
+    </div>
+
+    <a href="https://hyphaelium.com/install.html" class="btn-install">
+      Install Hyphælium now →
+    </a>
+  </div>
+
+</div>
+
+<script>
+// ── Configuration ─────────────────────────────────────
+// Replace with your Railway server URL when deployed
+const API_URL     = 'https://hypha-server.onrender.com';
+const STRIPE_KEY  = 'pk_live_51TUQv9PlpL8G5TIyaK7EirFKHJmHjIPVLXI0K90I6MljyOYggHcdxZnNoTskJZA2IdBEVlxpD4RQvZDfy68HI3lr00gqcwPssY';
+
+// ── State ──────────────────────────────────────────────
+let selectedPlan  = 'personal';
+let stripe        = null;
+let cardElement   = null;
+let paymentIntent = null;
+
+const PLANS = {
+  personal:   { name: 'Personal',   label: '99p/month',   price: '99p'   },
+  small_team: { name: 'Small Team', label: '£4.99/month', price: '£4.99' },
+  team:       { name: 'Team',       label: '£9.99/month', price: '£9.99' }
+};
+
+// ── Initialise Stripe Elements ─────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Pre-select plan from URL parameter e.g. /subscribe.html?plan=small_team
+  const urlPlan = new URLSearchParams(window.location.search).get('plan');
+  if (urlPlan && ['personal','small_team','team'].includes(urlPlan)) {
+    selectPlan(urlPlan);
+  }
+
+  stripe = Stripe(STRIPE_KEY);
+
+  const elements = stripe.elements({
+    appearance: {
+      theme: 'flat',
+      variables: {
+        colorPrimary:          '#2563a8',
+        colorBackground:       '#ffffff',
+        colorText:             '#1a2744',
+        colorDanger:           '#c8402a',
+        fontFamily:            '"DM Sans", sans-serif',
+        spacingUnit:           '4px',
+        borderRadius:          '4px',
+        fontSizeBase:          '15px'
+      },
+      rules: {
+        '.Input': {
+          border:    '0px',
+          outline:   'none',
+          boxShadow: 'none',
+          padding:   '0px'
+        },
+        '.Input:focus': {
+          border:    '0px',
+          boxShadow: 'none'
+        }
+      }
+    }
+  });
+
+  cardElement = elements.create('card', {
+    style: {
+      base: {
+        color:           '#1a2744',
+        fontFamily:      '"DM Sans", sans-serif',
+        fontSize:        '15px',
+        fontWeight:      '300',
+        '::placeholder': { color: '#b8c4d4' }
+      },
+      invalid: { color: '#c8402a' }
+    },
+    hidePostalCode: true
+  });
+
+  cardElement.mount('#card-element');
+
+  cardElement.on('focus', () => {
+    document.getElementById('card-element').classList.add('focused');
+  });
+
+  cardElement.on('blur', () => {
+    document.getElementById('card-element').classList.remove('focused');
+  });
+
+  cardElement.on('change', e => {
+    if (e.error) showMsg(e.error.message, 'err');
+    else clearMsg();
+  });
+});
+
+// ── Plan selection ─────────────────────────────────────
+function selectPlan(plan) {
+  selectedPlan = plan;
+  document.querySelectorAll('.plan-opt').forEach(el => {
+    el.classList.toggle('selected', el.dataset.plan === plan);
+  });
+  document.getElementById('sum-plan').textContent  = PLANS[plan].name;
+  document.getElementById('sum-price').textContent = PLANS[plan].price;
+  paymentIntent = null; // reset so new intent created with correct amount
+}
+
+// ── Pay ────────────────────────────────────────────────
+async function handlePay() {
+  const email    = document.getElementById('email').value.trim().toLowerCase();
+  const password = document.getElementById('password').value;
+
+  // Validate
+  if (!email || !email.includes('@')) {
+    showMsg('Please enter a valid email address.', 'err'); return;
+  }
+  if (password.length < 8) {
+    showMsg('Password must be at least 8 characters.', 'err'); return;
+  }
+
+  const btn = document.getElementById('btn-pay');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Processing…';
+  clearMsg();
+
+  try {
+    // Step 1 — Create payment intent on server
+    showMsg('Preparing your subscription…', 'info');
+
+    const piRes = await fetch(API_URL + '/create-payment', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ plan: selectedPlan, email })
+    });
+
+    const piData = await piRes.json();
+
+    if (!piRes.ok) {
+      showMsg(piData.error || 'Could not prepare payment — please try again.', 'err');
+      resetButton(); return;
+    }
+
+    // Step 2 — Confirm card with Stripe
+    showMsg('Confirming your card…', 'info');
+
+    const { paymentIntent: pi, error: stripeError } = await stripe.confirmCardPayment(
+      piData.clientSecret,
+      {
+        payment_method: {
+          card:             cardElement,
+          billing_details:  { email }
+        }
+      }
+    );
+
+    if (stripeError) {
+      showMsg(stripeError.message, 'err');
+      resetButton(); return;
+    }
+
+    if (pi.status !== 'succeeded') {
+      showMsg('Payment did not complete — please try again.', 'err');
+      resetButton(); return;
+    }
+
+    // Step 3 — Create account on server
+    showMsg('Creating your account…', 'info');
+
+    const acctRes = await fetch(API_URL + '/confirm-payment', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({
+        paymentIntentId: pi.id,
+        email,
+        password,
+        plan: selectedPlan
+      })
+    });
+
+    const acctData = await acctRes.json();
+
+    if (!acctRes.ok) {
+      showMsg(acctData.error || 'Account creation failed — please contact privacy@hyphaelium.com', 'err');
+      resetButton(); return;
+    }
+
+    // Step 4 — Save token and show success
+    localStorage.setItem('hypha-token', acctData.token);
+    localStorage.setItem('hypha-email', email);
+    localStorage.setItem('hypha-plan',  selectedPlan);
+
+    showSuccess(email);
+
+  } catch(e) {
+    showMsg('Something went wrong — please try again or contact privacy@hyphaelium.com', 'err');
+    resetButton();
+    console.error('[pay]', e);
+  }
+}
+
+function resetButton() {
+  const btn = document.getElementById('btn-pay');
+  btn.disabled = false;
+  btn.innerHTML = 'Subscribe to Hyphælium →';
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'msg ' + type;
+}
+
+function clearMsg() {
+  const el = document.getElementById('msg');
+  el.className = 'msg';
+  el.textContent = '';
+}
+
+function showSuccess(email) {
+  document.getElementById('screen-payment').style.display = 'none';
+  document.getElementById('screen-success').style.display = 'block';
+  document.getElementById('success-email').textContent = email;
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<!-- Copyright 2026 Hyphælium. All rights reserved. privacy@hyphaelium.com -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyphælium — Setting Up Your Vault</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#f5f2eb;color:#1a2744;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.75;padding:0 0 80px;}
+header{background:#1a2744;padding:20px 40px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-logo{display:flex;align-items:center;gap:12px;}
+.hdr-logo h1{font-family:'Lora',serif;font-size:1.2rem;font-weight:400;font-style:italic;color:#f5f2eb;}
+.hdr-logo p{font-size:0.65rem;color:#4a80c4;font-family:'DM Mono',monospace;letter-spacing:0.14em;text-transform:uppercase;margin-top:2px;}
+.hdr-back{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#4a80c4;text-decoration:none;transition:color 0.2s;}
+.hdr-back:hover{color:#b8d0f0;}
+.hero{background:#1a2744;padding:52px 40px 60px;}
+.hero-inner{max-width:680px;margin:0 auto;}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:#4a80c4;margin-bottom:16px;}
+.hero h2{font-family:'Lora',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:400;font-style:italic;color:#f5f2eb;line-height:1.2;margin-bottom:16px;}
+.hero-lead{font-size:1rem;font-weight:300;color:rgba(245,242,235,0.65);line-height:1.8;max-width:560px;}
+main{max-width:680px;margin:0 auto;padding:52px 32px 0;}
+.reassure{background:#ffffff;border:1px solid #dde3ed;border-radius:10px;padding:24px 28px;margin-bottom:48px;display:flex;gap:18px;align-items:flex-start;}
+.reassure-icon{font-size:1.6rem;flex-shrink:0;margin-top:2px;}
+.reassure h3{font-family:'Lora',serif;font-size:1rem;font-weight:500;color:#1a2744;margin-bottom:6px;}
+.reassure p{font-size:0.9rem;color:#4a5a80;font-weight:300;line-height:1.65;margin:0;}
+.step{margin-bottom:44px;padding-bottom:44px;border-bottom:1px solid #dde3ed;position:relative;}
+.step:last-of-type{border-bottom:none;}
+.step-header{display:flex;align-items:flex-start;gap:18px;margin-bottom:18px;}
+.step-num{width:40px;height:40px;border-radius:50%;background:#1a2744;color:#b8d0f0;font-family:'Lora',serif;font-size:1.1rem;font-style:italic;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-title{font-family:'Lora',serif;font-size:1.2rem;font-weight:500;color:#1a2744;line-height:1.3;}
+.step-sub{font-size:0.82rem;color:#6a7a94;margin-top:4px;font-family:'DM Mono',monospace;letter-spacing:0.06em;}
+.step-body{padding-left:58px;}
+.step-body p{color:#3a4a64;margin-bottom:14px;font-weight:300;line-height:1.8;}
+.step-body p strong{color:#1a2744;font-weight:500;}
+.step-body p:last-child{margin-bottom:0;}
+.action-box{background:#ffffff;border:1px solid #dde3ed;border-radius:8px;padding:18px 22px;margin:16px 0;}
+.action-box ol{margin-left:18px;}
+.action-box li{color:#1a2744;font-size:0.92rem;margin-bottom:8px;line-height:1.65;font-weight:300;}
+.action-box li strong{color:#1a2744;font-weight:500;}
+.action-box li:last-child{margin-bottom:0;}
+code{background:#e8f0fb;padding:2px 8px;border-radius:4px;font-family:'DM Mono',monospace;font-size:0.82rem;color:#2563a8;}
+.tip{background:#e8f0fb;border-left:3px solid #2563a8;padding:14px 18px;border-radius:0 6px 6px 0;margin:16px 0;font-size:0.9rem;color:#1a2744;}
+.tip strong{color:#1a2744;font-weight:500;}
+.warning{background:#fdf7e8;border-left:3px solid #c8892a;padding:14px 18px;border-radius:0 6px 6px 0;margin:16px 0;font-size:0.9rem;color:#6b4d10;}
+.copy-box{background:#1a2744;border-radius:8px;padding:16px 20px;margin:16px 0;position:relative;}
+.copy-box code{background:transparent;color:#b8d0f0;font-size:0.85rem;padding:0;display:block;line-height:1.6;}
+.copy-btn{position:absolute;top:12px;right:12px;background:rgba(74,128,196,0.2);border:1px solid rgba(74,128,196,0.3);border-radius:4px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:#4a80c4;cursor:pointer;transition:all 0.2s;}
+.copy-btn:hover{background:rgba(74,128,196,0.35);color:#b8d0f0;}
+.done-box{background:#f0f9f4;border:1px solid rgba(46,125,82,0.25);border-radius:10px;padding:24px 28px;margin-top:48px;text-align:center;}
+.done-box h3{font-family:'Lora',serif;font-size:1.3rem;font-weight:400;font-style:italic;color:#1a2744;margin-bottom:10px;}
+.done-box p{font-size:0.92rem;color:#3a4a64;font-weight:300;margin-bottom:20px;line-height:1.7;}
+.btn-next{display:inline-block;background:#2563a8;color:#fff;text-decoration:none;padding:13px 32px;border-radius:6px;font-family:'Lora',serif;font-size:0.95rem;font-style:italic;letter-spacing:0.04em;transition:background 0.2s,transform 0.15s;}
+.btn-next:hover{background:#4a80c4;transform:translateY(-1px);}
+.progress{display:flex;gap:8px;margin-bottom:40px;align-items:center;}
+.progress-step{display:flex;align-items:center;gap:6px;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:#9aaabb;}
+.progress-step.active{color:#2563a8;}
+.progress-step.done{color:#2e7d52;}
+.progress-dot{width:8px;height:8px;border-radius:50%;background:#dde3ed;}
+.progress-step.active .progress-dot{background:#2563a8;}
+.progress-step.done .progress-dot{background:#2e7d52;}
+.progress-line{flex:1;height:1px;background:#dde3ed;}
+@media(max-width:600px){main{padding:36px 20px 0;}header{padding:16px 20px;}.hero{padding:40px 20px 48px;}.step-body{padding-left:0;margin-top:14px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-logo">
+    <svg viewBox="0 0 32 32" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="14" fill="#e8f0fb" stroke="#2563a8" stroke-width="1.5"/>
+      <circle cx="16" cy="16" r="3.5" fill="#2563a8"/>
+      <line x1="16" y1="12.5" x2="16" y2="6" stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="16" y1="19.5" x2="16" y2="26" stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="12.5" y1="16" x2="6" y2="16" stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="19.5" y1="16" x2="26" y2="16" stroke="#2563a8" stroke-width="1.3" stroke-linecap="round"/>
+    </svg>
+    <div><h1>Hyphælium</h1><p>Vault Setup</p></div>
+  </div>
+  <a class="hdr-back" href="https://hyphaelium.com/how-to.html">← Back to how-to</a>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">One-time setup · Takes about 10 minutes</div>
+    <h2>Setting up your vault</h2>
+    <p class="hero-lead">
+      Your vault is a private database that only you can access.
+      We use a free service called Supabase to store it securely.
+      You only do this once — after that Hyphælium just works.
+    </p>
+  </div>
+</div>
+
+<main>
+
+  <!-- Reassurance -->
+  <div class="reassure">
+    <div class="reassure-icon">🔒</div>
+    <div>
+      <h3>Your data is yours — completely</h3>
+      <p>Supabase is a trusted database service used by hundreds of thousands of developers worldwide. Your vault lives in your own private Supabase project. Hyphælium cannot read your conversations — we only store the address of each one, never the content. You can delete your data at any time.</p>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress">
+    <div class="progress-step active"><span class="progress-dot"></span>Create account</div>
+    <div class="progress-line"></div>
+    <div class="progress-step"><span class="progress-dot"></span>Create project</div>
+    <div class="progress-line"></div>
+    <div class="progress-step"><span class="progress-dot"></span>Run setup</div>
+    <div class="progress-line"></div>
+    <div class="progress-step"><span class="progress-dot"></span>Copy your keys</div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Create a free Supabase account</div>
+        <div class="step-sub">supabase.com · free forever for personal use</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Supabase is free for personal use — no credit card required. You will not be charged anything.</p>
+      <div class="action-box">
+        <ol>
+          <li>Open a new browser tab and go to <strong>supabase.com</strong></li>
+          <li>Click the green <strong>Start your project</strong> button</li>
+          <li>Sign up with your email address — or use your Google account for speed</li>
+          <li>Check your email and confirm your address if asked</li>
+          <li>You will land on the Supabase dashboard — a dark screen with your account</li>
+        </ol>
+      </div>
+      <div class="tip"><strong>Already have a Supabase account?</strong> Skip straight to Step 2.</div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Create a new project</div>
+        <div class="step-sub">This is your private vault container</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Each Supabase project is a separate private database. You need one for Hyphælium.</p>
+      <div class="action-box">
+        <ol>
+          <li>On the Supabase dashboard click <strong>New project</strong></li>
+          <li>Give it a name — <strong>Hyphælium</strong> is perfect</li>
+          <li>Create a database password — make it strong, write it down somewhere safe</li>
+          <li>Choose a region — pick the one closest to you geographically</li>
+          <li>Click <strong>Create new project</strong></li>
+          <li>Wait about 60 seconds while Supabase sets it up — a progress bar shows</li>
+          <li>When it says <strong>Project is ready</strong> — move to Step 3</li>
+        </ol>
+      </div>
+      <div class="warning">
+        <strong>Important:</strong> Save your database password somewhere safe — in a password manager or written down. You will not need it often but you may need it later.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Run the Hyphælium setup</div>
+        <div class="step-sub">One SQL command · takes about 10 seconds</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>You need to tell your database what to store. This is done by running one block of code — copy and paste, no typing required.</p>
+      <div class="action-box">
+        <ol>
+          <li>In your Supabase project look at the left sidebar</li>
+          <li>Click <strong>SQL Editor</strong> — it looks like a code symbol <code>&lt;/&gt;</code></li>
+          <li>Click <strong>New query</strong></li>
+          <li>Copy the entire block of code below</li>
+          <li>Paste it into the large white text area</li>
+          <li>Click the green <strong>Run</strong> button at the bottom right</li>
+          <li>You should see <strong>Success. No rows returned</strong> — this is correct</li>
+        </ol>
+      </div>
+
+      <p><strong>Copy this entire block:</strong></p>
+      <div class="copy-box">
+        <button class="copy-btn" onclick="copySQL()">Copy</button>
+        <code id="sql-block">CREATE TABLE IF NOT EXISTS hyphaelium_captures (
+  id            uuid        DEFAULT gen_random_uuid() PRIMARY KEY,
+  captured_at   timestamptz NOT NULL DEFAULT now(),
+  platform      text        NOT NULL,
+  route_path    text        NOT NULL,
+  identity_tag  text        NOT NULL,
+  topic         text        DEFAULT 'general',
+  depth         integer     DEFAULT 0,
+  boundary_count integer    DEFAULT 0,
+  boundary_flag boolean     DEFAULT false
+);
+
+ALTER TABLE hyphaelium_captures ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "open" ON hyphaelium_captures;
+CREATE POLICY "open" ON hyphaelium_captures FOR ALL USING (true) WITH CHECK (true);
+GRANT ALL ON hyphaelium_captures TO anon;
+GRANT ALL ON hyphaelium_captures TO authenticated;
+GRANT USAGE ON SCHEMA public TO anon;
+GRANT USAGE ON SCHEMA public TO authenticated;</code>
+      </div>
+
+      <div class="tip">
+        <strong>Seeing "No rows returned"?</strong> That is exactly right. It means the setup worked perfectly. This command creates your vault — it does not return any data.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">Copy your two keys</div>
+        <div class="step-sub">You will need these to connect Hyphælium to your vault</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Supabase gives you two pieces of information that Hyphælium needs — your Project URL and your API key. These are like an address and a door key for your vault.</p>
+      <div class="action-box">
+        <ol>
+          <li>In the left sidebar click <strong>Settings</strong> — the cog icon at the very bottom</li>
+          <li>Click <strong>API</strong> in the settings menu</li>
+          <li>You will see two sections — find <strong>Project URL</strong></li>
+          <li>Click the copy icon next to it — it looks like two overlapping squares</li>
+          <li>Paste it somewhere temporary — Notepad is perfect</li>
+          <li>Now find <strong>Project API keys</strong></li>
+          <li>Look for the row labelled <strong>anon / public</strong> or click <strong>Publishable</strong></li>
+          <li>Click the copy icon next to that key</li>
+          <li>Paste it below your URL in Notepad</li>
+        </ol>
+      </div>
+
+      <p>You should now have two things in Notepad that look something like this:</p>
+      <div class="copy-box">
+        <code>Project URL:
+https://abcdefghijklmn.supabase.co
+
+API Key:
+sb_publishable_xxxxxxxxxxxxxxxxxxxxxxxx</code>
+      </div>
+
+      <div class="warning">
+        <strong>Which key to use:</strong> Use the <strong>anon / public</strong> key or the <strong>Publishable</strong> key. Do NOT use the service_role key — that one has full database access and should never leave Supabase.
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">Connect your vault</div>
+        <div class="step-sub">The last step — then you are done</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Now you have your URL and key, you can connect Hyphælium to your vault.</p>
+
+      <p><strong>For the bookmarklet:</strong> Go to <code>hyphaelium.com/install.html</code>, enter your URL and key, click Connect. Done.</p>
+
+      <p><strong>For the vault viewer:</strong> Go to <code>hyphaelium.com/vault.html</code>, enter your URL and key, click Open Vault. Your vault opens. From now on it remembers your credentials — you will not be asked again.</p>
+
+      <p><strong>For the Chrome extension</strong> (when available): Click the Hyphælium icon in your Chrome toolbar, enter your URL and key, click Connect.</p>
+
+      <div class="tip">
+        <strong>One set of credentials — everywhere.</strong> Your URL and key are the same for the bookmarklet, the vault, and the extension. Enter them once in each place and they are remembered permanently.
+      </div>
+    </div>
+  </div>
+
+  <!-- Done -->
+  <div class="done-box">
+    <h3>Your vault is ready.</h3>
+    <p>Every breadcrumb you save from this point forward lands safely in your private vault. Open it anytime at <strong>hyphaelium.com/vault.html</strong> to see your complete trail of thought.</p>
+    <a href="https://hyphaelium.com/install.html" class="btn-next">Install the bookmarklet →</a>
+  </div>
+
+  <!-- FAQ -->
+  <div style="margin-top:52px;padding-top:40px;border-top:1px solid #dde3ed;">
+    <h3 style="font-family:'Lora',serif;font-size:1.1rem;font-weight:500;color:#1a2744;margin-bottom:28px;">If something went wrong</h3>
+
+    <div style="margin-bottom:20px;">
+      <p style="font-weight:500;color:#1a2744;margin-bottom:6px;">"No rows returned" after running the SQL</p>
+      <p style="font-size:0.9rem;color:#4a5a80;font-weight:300;">This is correct. It means the setup worked. Move to Step 4.</p>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <p style="font-weight:500;color:#1a2744;margin-bottom:6px;">"Key rejected" when connecting</p>
+      <p style="font-size:0.9rem;color:#4a5a80;font-weight:300;">Make sure you are using the <strong>anon / public</strong> or <strong>Publishable</strong> key — not the service_role key. Copy it fresh using the copy icon rather than typing it.</p>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <p style="font-weight:500;color:#1a2744;margin-bottom:6px;">"Table not found" when opening vault</p>
+      <p style="font-size:0.9rem;color:#4a5a80;font-weight:300;">The SQL in Step 3 did not run correctly. Go back to Supabase → SQL Editor → run the code block again.</p>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <p style="font-weight:500;color:#1a2744;margin-bottom:6px;">"Project is paused"</p>
+      <p style="font-size:0.9rem;color:#4a5a80;font-weight:300;">Supabase free tier projects pause after 7 days with no activity. Go to supabase.com, click your project, and click <strong>Restore project</strong>. Takes about 2 minutes.</p>
+    </div>
+
+    <div>
+      <p style="font-weight:500;color:#1a2744;margin-bottom:6px;">Still stuck?</p>
+      <p style="font-size:0.9rem;color:#4a5a80;font-weight:300;">Email us at <strong>privacy@hyphaelium.com</strong> and describe what you see. We will help you sort it out — usually within a few hours.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:48px;padding-top:20px;border-top:1px solid #dde3ed;font-family:'DM Mono',monospace;font-size:0.62rem;color:#9aaabb;letter-spacing:0.08em;text-align:center;">
+    &copy; 2026 Hyph&aelig;lium &middot;
+    <a href="https://hyphaelium.com/terms.html" style="color:#9aaabb;">Terms</a> &middot;
+    <a href="https://hyphaelium.com/privacy-policy.html" style="color:#9aaabb;">Privacy</a>
+  </div>
+
+</main>
+
+<script>
+function copySQL() {
+  const text = document.getElementById('sql-block').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    btn.style.color = '#4caf80';
+    setTimeout(() => { btn.textContent = 'Copy'; btn.style.color = ''; }, 2000);
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
