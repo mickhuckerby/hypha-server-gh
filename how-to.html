@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyphælium — How To Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#faf7f0;color:#1e1a14;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;padding:0 0 80px;}
+header{background:#1a1208;padding:20px 40px;display:flex;align-items:center;gap:12px;}
+header h1{font-family:'Lora',serif;font-size:1.2rem;font-weight:400;color:#f4efe2;}
+header p{font-size:10px;color:#4caf80;text-transform:uppercase;letter-spacing:0.12em;margin-top:2px;}
+main{max-width:720px;margin:0 auto;padding:48px 32px 0;}
+h2{font-family:'Lora',serif;font-size:1.8rem;font-weight:400;color:#1e1a14;margin-bottom:8px;}
+.intro{font-size:1rem;color:#5a5040;font-style:italic;margin-bottom:48px;font-family:'Lora',serif;}
+.section{margin-bottom:48px;}
+.section-num{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:#9a8e7a;margin-bottom:8px;}
+h3{font-family:'Lora',serif;font-size:1.25rem;font-weight:400;color:#1e1a14;margin-bottom:16px;}
+p{color:#5a5040;margin-bottom:14px;font-weight:300;}
+p strong{color:#1e1a14;font-weight:500;}
+.step{background:#fff;border:1px solid #ede5d0;border-radius:8px;padding:20px 24px;margin-bottom:12px;position:relative;padding-left:60px;}
+.step-num{position:absolute;left:20px;top:20px;width:28px;height:28px;background:#1a1208;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:0.85rem;color:#4caf80;font-style:italic;}
+.step h4{font-family:'Lora',serif;font-size:0.98rem;font-weight:500;color:#1e1a14;margin-bottom:6px;}
+.step p{margin:0;font-size:0.9rem;}
+.tip{background:#f0f7f0;border-left:3px solid #2e7d52;padding:14px 18px;border-radius:0 6px 6px 0;margin:20px 0;font-size:0.9rem;color:#3d5c3d;}
+.tip strong{color:#1e5c1e;}
+.warning{background:#fdf7e8;border-left:3px solid #c8892a;padding:14px 18px;border-radius:0 6px 6px 0;margin:20px 0;font-size:0.9rem;color:#6b4d10;}
+code{background:#f0ebe0;padding:2px 7px;border-radius:3px;font-family:'DM Mono',monospace;font-size:0.82rem;color:#5a3820;}
+.platform-table{width:100%;border-collapse:collapse;margin:16px 0;}
+.platform-table th{background:#1a1208;color:#c8e6c9;font-family:'DM Mono',monospace;font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;padding:10px 14px;text-align:left;}
+.platform-table td{padding:10px 14px;border-bottom:1px solid #ede5d0;font-size:0.9rem;color:#5a5040;}
+.platform-table tr:last-child td{border-bottom:none;}
+.shortcut-box{background:#1a1208;border-radius:6px;padding:16px 20px;color:#c8e6c9;font-family:'DM Mono',monospace;font-size:0.82rem;margin:16px 0;}
+.shortcut-box .key{background:#2e7d52;padding:2px 8px;border-radius:3px;font-size:0.75rem;}
+</style>
+</head>
+<body>
+<header>
+  <svg viewBox="0 0 32 32" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="16" cy="16" r="14" fill="#1a2e1a" stroke="#2e7d52" stroke-width="1.5"/>
+    <circle cx="16" cy="16" r="3.5" fill="#2e7d52"/>
+    <line x1="16" y1="12.5" x2="16" y2="6" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="16" y1="19.5" x2="16" y2="26" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="12.5" y1="16" x2="6" y2="16" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+    <line x1="19.5" y1="16" x2="26" y2="16" stroke="#4caf80" stroke-width="1.3" stroke-linecap="round"/>
+  </svg>
+  <div><h1>Hyphælium</h1><p>How To Guide</p></div>
+</header>
+
+<main>
+  <h2>How to use Hyphælium</h2>
+  <p class="intro">Everything you need to know to get the most from your subscription. Straightforward, honest, no technical jargon.</p>
+
+  <div class="section">
+    <div class="section-num">01 — The idea</div>
+    <h3>What Hyphælium does</h3>
+    <p>You use multiple AI platforms — Claude for deep thinking, ChatGPT for drafting, Gemini for research. Each one holds a piece of your thinking. None of them talk to each other.</p>
+    <p>Hyphælium sits quietly in the corner of each AI platform. When you have a conversation worth keeping, you click the small green icon once. Hyphælium saves a breadcrumb — the platform, the topic, the link back — to your private vault.</p>
+    <p>Later, you open your vault and see your complete trail of thought. Click any breadcrumb to return directly to that conversation.</p>
+    <p><strong>That is all it does. One click. One breadcrumb. Always findable.</strong></p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">02 — Saving a breadcrumb</div>
+    <h3>How to save</h3>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Have a conversation on any supported AI platform</h4>
+      <p>Claude, ChatGPT, Gemini, Copilot or Perplexity — open any of these in Chrome as normal.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Look for the green icon in the bottom right corner</h4>
+      <p>A small dark circular icon with a green glow sits in the corner of the page. It shows a small "Save" label beneath it.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>Click the icon when the conversation matters</h4>
+      <p>One click. The label briefly shows "✓" and a small message confirms the save. That's it.</p>
+    </div>
+
+    <div class="tip">
+      <strong>Keyboard shortcut:</strong> Press <span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">H</span> (Windows) or <span class="key">Cmd</span> + <span class="key">Shift</span> + <span class="key">H</span> (Mac) to save without moving your mouse.
+    </div>
+
+    <p>You do not need to save every message. Save when a conversation reaches something worth returning to — a useful answer, a line of research, a decision made.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">03 — The vault</div>
+    <h3>Viewing your breadcrumbs</h3>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <h4>Open your vault</h4>
+      <p>Open the file <code>hyphaelium-vault.html</code> in Chrome. Bookmark it for quick access.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <h4>Sign in with your credentials</h4>
+      <p>Enter your Supabase Project URL and anon key — the same ones you entered in the extension. You only need to do this once per browser.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <h4>Browse your trail</h4>
+      <p>Your breadcrumbs appear grouped by day, with the platform, topic and time shown for each. Use the filter buttons to narrow by platform or topic.</p>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <h4>Return to any conversation</h4>
+      <p>Click any breadcrumb to open that conversation directly. It opens in a new tab, exactly where you left it.</p>
+    </div>
+
+    <div class="tip">
+      <strong>Your vault is online:</strong> Bookmark
+      <a href="https://hyphaelium.com/vault.html" style="color:#2e5c2e;">hyphaelium.com/vault.html</a>
+      for instant access from any device, any browser.
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-num">04 — Supported platforms</div>
+    <h3>Where Hyphælium works</h3>
+    <table class="platform-table">
+      <tr><th>Platform</th><th>Address</th><th>Status</th></tr>
+      <tr><td>Claude</td><td>claude.ai</td><td style="color:#2e7d52">✓ Built in</td></tr>
+      <tr><td>ChatGPT</td><td>chat.openai.com</td><td style="color:#2e7d52">✓ Built in</td></tr>
+      <tr><td>Gemini</td><td>gemini.google.com</td><td style="color:#2e7d52">✓ Built in</td></tr>
+      <tr><td>Copilot</td><td>copilot.microsoft.com</td><td style="color:#2e7d52">✓ Built in</td></tr>
+      <tr><td>Perplexity</td><td>perplexity.ai</td><td style="color:#2e7d52">✓ Built in</td></tr>
+      <tr><td>Any other AI platform</td><td>your choice</td><td style="color:#7a6a90">+ Add via popup</td></tr>
+    </table>
+
+    <p>To add a new platform, click the Hyphælium icon in your Chrome toolbar and use the <strong>+ Add a platform</strong> button.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">05 — Thread awareness</div>
+    <h3>What the icon tells you</h3>
+    <p>As your conversation develops, the green icon subtly changes:</p>
+    <p><strong>Border brightens</strong> — the conversation is deepening. More exchanges have taken place.</p>
+    <p><strong>Border turns amber</strong> — the AI has signalled a knowledge boundary. It has used a phrase like "as of my last update" or "you may wish to verify this". This is a useful signal that you might benefit from checking a current source or continuing the thread on a research-focused platform like Perplexity.</p>
+    <p>Hover over the icon to see a tooltip showing the conversation title, depth, and topic as Hyphælium has understood them.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-num">06 — If something goes wrong</div>
+    <h3>Common questions</h3>
+
+    <p><strong>The green icon is not appearing.</strong><br>
+    Make sure you are using Chrome. Refresh the page after enabling the extension. Check that the extension is enabled in <code>chrome://extensions</code>.</p>
+
+    <p><strong>The save shows amber and says "saved locally".</strong><br>
+    Your device was offline when you saved. The breadcrumb has been kept safely on your device and will sync to your vault automatically when you reconnect to the internet.</p>
+
+    <p><strong>The vault shows "table not found".</strong><br>
+    Run the <code>SUPABASE_SCHEMA.sql</code> file in your Supabase SQL Editor. Instructions are in the setup guide.</p>
+
+    <p><strong>The vault shows a 401 error.</strong><br>
+    Your credentials need re-entering. Open the Hyphælium popup, disconnect and reconnect with your Supabase URL and anon key.</p>
+
+    <div class="warning">
+      <strong>Important:</strong> Hyphælium only saves in Chrome. If you use a different browser, install the Tampermonkey version — the file <code>hyphaelium.user.js</code> in the tampermonkey folder.
+    </div>
+  </div>
+
+
+  <div class="section" style="margin-top:48px;padding-top:40px;border-top:1px solid #ede5d0;">
+    <div class="section-num">Further reading</div>
+    <h3>Getting more from every AI conversation</h3>
+    <p>Hyphælium saves the breadcrumbs — but the quality of what you save depends on the quality of what you asked. The query craft guide shows you how to form questions that get genuinely useful answers, which platform suits which kind of thinking, and seven habits that will change how you use AI permanently.</p>
+    <p>
+      <a href="/query-craft.html"
+         style="display:inline-flex;align-items:center;gap:8px;
+                background:#1a1208;color:#4caf80;text-decoration:none;
+                padding:12px 24px;border-radius:6px;font-size:0.9rem;
+                border:1px solid #2e5c2e;font-style:italic;
+                font-family:'Lora',serif;transition:all 0.2s;">
+        Read the Query Craft Guide →
+      </a>
+    </p>
+  </div>
+
+</main>
+
+  <!-- Copyright notice -->
+  <div style="text-align:center;padding:24px;font-family:'Courier New',monospace;font-size:10px;color:#3a5c3a;border-top:1px solid #1e3a1e;margin-top:40px;">
+    © 2026 Hyphælium. All rights reserved. · 
+    The Forward and all original text are protected by copyright. · 
+    Hyphælium is a registered trademark (pending).
+  </div>
+</body>
+</html>

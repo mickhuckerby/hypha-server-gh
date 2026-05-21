@@ -1,0 +1,150 @@
+{
+  "_comment": "Hyphælium Platform Selectors — edit this file to fix broken selectors without updating the extension",
+  "_updated": "2026-05-12",
+  "_version": "1.0",
+
+  "platforms": {
+    "claude.ai": {
+      "name": "Claude",
+      "input": [
+        "div[contenteditable='true'][data-placeholder]",
+        "div[contenteditable='true']"
+      ],
+      "response": [
+        "[data-testid='assistant-message']",
+        ".font-claude-message",
+        "[class*='assistant']"
+      ],
+      "userMsg": [
+        "[data-testid='user-message']",
+        "[class*='user-message']"
+      ],
+      "sendBtn": [
+        "button[type='submit']",
+        "button[aria-label*='Send']"
+      ]
+    },
+
+    "chat.openai.com": {
+      "name": "ChatGPT",
+      "input": [
+        "div#prompt-textarea",
+        "textarea"
+      ],
+      "response": [
+        "[data-message-author-role='assistant']",
+        "[class*='markdown']"
+      ],
+      "userMsg": [
+        "[data-message-author-role='user']"
+      ],
+      "sendBtn": [
+        "button[data-testid='send-button']",
+        "button[aria-label='Send prompt']"
+      ]
+    },
+
+    "chatgpt.com": {
+      "name": "ChatGPT",
+      "input": [
+        "div#prompt-textarea",
+        "textarea"
+      ],
+      "response": [
+        "[data-message-author-role='assistant']",
+        "[class*='markdown']"
+      ],
+      "userMsg": [
+        "[data-message-author-role='user']"
+      ],
+      "sendBtn": [
+        "button[data-testid='send-button']",
+        "button[aria-label='Send prompt']"
+      ]
+    },
+
+    "gemini.google.com": {
+      "name": "Gemini",
+      "input": [
+        "div.ql-editor",
+        "rich-textarea div[contenteditable='true']",
+        "div[contenteditable='true']"
+      ],
+      "response": [
+        ".model-response-text",
+        ".response-text",
+        "model-response"
+      ],
+      "userMsg": [
+        ".user-query-text",
+        ".query-text"
+      ],
+      "sendBtn": [
+        "button.send-button",
+        "button[aria-label='Send message']"
+      ]
+    },
+
+    "copilot.microsoft.com": {
+      "name": "Copilot",
+      "input": [
+        "div[contenteditable='true']",
+        "textarea"
+      ],
+      "response": [
+        "cib-message-group[source='bot']",
+        ".ac-textBlock"
+      ],
+      "userMsg": [
+        "cib-chat-turn[source='user']"
+      ],
+      "sendBtn": [
+        "button[aria-label='Submit']",
+        "button[type='submit']"
+      ]
+    },
+
+    "perplexity.ai": {
+      "name": "Perplexity",
+      "input": [
+        "textarea[placeholder]",
+        "div[contenteditable='true']",
+        "textarea"
+      ],
+      "response": [
+        ".prose",
+        "[class*='answer']"
+      ],
+      "userMsg": [
+        "[class*='query']"
+      ],
+      "sendBtn": [
+        "button[aria-label='Submit']",
+        "button[type='submit']"
+      ]
+    }
+  },
+
+  "boundaryPhrases": [
+    "my knowledge cutoff",
+    "my knowledge has a cutoff",
+    "my training data",
+    "as of my last update",
+    "as of my knowledge",
+    "i cannot verify current",
+    "you may want to verify",
+    "you should check current",
+    "this may have changed",
+    "rapidly evolving",
+    "i'm not certain of the most recent",
+    "i cannot access real-time",
+    "i don't have access to current",
+    "for the most up-to-date",
+    "consult a current source",
+    "i recommend checking",
+    "i cannot guarantee accuracy",
+    "please verify this",
+    "this is a complex area",
+    "you may wish to consult"
+  ]
+}
