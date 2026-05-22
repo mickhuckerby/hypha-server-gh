@@ -1,3 +1,4 @@
+
 // HYPHÆLIUM Bookmarklet v2.0
 // Loaded dynamically to avoid Chrome length limits
 (function(){
