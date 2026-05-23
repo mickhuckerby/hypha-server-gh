@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<!-- © 2026 Hyphælium. All rights reserved. privacy@hyphaelium.com -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyphælium — Install the Bookmarklet</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0e0b06;color:#f0ebe0;font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.7;min-height:100vh;}
+
+.page{max-width:640px;margin:0 auto;padding:60px 28px 80px;}
+
+.logo{display:flex;align-items:center;gap:14px;margin-bottom:52px;}
+.logo h1{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;font-style:italic;color:#f0ebe0;}
+.logo p{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:#5a7a5a;margin-top:3px;}
+
+h2{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:#f0ebe0;margin-bottom:8px;}
+p{color:#9a8e7a;font-weight:300;margin-bottom:16px;line-height:1.75;}
+p strong{color:#f0ebe0;font-weight:500;}
+
+.step{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid #1e3a1e;}
+.step:last-child{border-bottom:none;}
+.step-num{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:#2e7d52;margin-bottom:10px;}
+
+/* The draggable bookmarklet button */
+.bookmark-btn-wrap{margin:20px 0;text-align:center;}
+
+.bookmark-btn{
+  display:inline-block;
+  background:#1a2e1a;
+  border:2px solid #2e7d52;
+  border-radius:8px;
+  padding:14px 28px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;
+  font-style:italic;
+  color:#c8e6c9;
+  text-decoration:none;
+  cursor:grab;
+  transition:all 0.2s;
+  box-shadow:0 4px 20px rgba(46,125,82,0.2);
+  user-select:none;
+}
+
+.bookmark-btn:hover{
+  background:#2e5c2e;
+  border-color:#4caf80;
+  box-shadow:0 6px 28px rgba(76,175,128,0.3);
+  transform:translateY(-2px);
+}
+
+.bookmark-btn:active{cursor:grabbing;}
+
+.drag-hint{
+  font-family:'DM Mono',monospace;
+  font-size:0.65rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:#3a5c3a;
+  text-align:center;
+  margin-top:10px;
+}
+
+/* Arrow animation */
+.drag-arrow{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin:16px 0;
+  color:#2e7d52;
+  font-size:1.5rem;
+  animation:bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+}
+
+/* Browser instruction panels */
+.browser-tabs{display:flex;gap:8px;margin-bottom:0;flex-wrap:wrap;}
+
+.tab-btn{
+  background:transparent;
+  border:1px solid #1e3a1e;
+  border-radius:6px 6px 0 0;
+  padding:7px 16px;
+  font-family:'DM Mono',monospace;
+  font-size:0.65rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:#5a7a5a;
+  cursor:pointer;
+  transition:all 0.18s;
+  border-bottom:none;
+}
+
+.tab-btn.active{
+  background:#1a2e1a;
+  border-color:#2e7d52;
+  color:#4caf80;
+}
+
+.browser-panel{
+  display:none;
+  background:#111d11;
+  border:1px solid #2e7d52;
+  border-radius:0 6px 6px 6px;
+  padding:20px 24px;
+  margin-bottom:20px;
+}
+
+.browser-panel.active{display:block;}
+
+.browser-panel ol{margin-left:18px;}
+.browser-panel li{
+  color:#9a8e7a;
+  font-size:0.9rem;
+  font-weight:300;
+  margin-bottom:8px;
+  line-height:1.6;
+}
+.browser-panel li strong{color:#f0ebe0;font-weight:500;}
+
+/* Safari special note */
+.safari-note{
+  background:rgba(200,137,42,0.08);
+  border:1px solid rgba(200,137,42,0.2);
+  border-radius:6px;
+  padding:12px 16px;
+  margin-top:12px;
+  font-size:0.82rem;
+  color:rgba(200,137,42,0.8);
+}
+
+/* Connection test */
+.test-section{
+  background:#111d11;
+  border:1px solid #1e3a1e;
+  border-radius:8px;
+  padding:24px;
+  margin-top:20px;
+}
+
+.test-section h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;
+  font-weight:400;
+  font-style:italic;
+  color:#f0ebe0;
+  margin-bottom:16px;
+}
+
+.field{margin-bottom:12px;}
+.field label{
+  display:block;
+  font-family:'DM Mono',monospace;
+  font-size:0.62rem;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:#5a7a5a;
+  margin-bottom:5px;
+}
+.field input{
+  width:100%;
+  background:#0e0b06;
+  border:1px solid #1e3a1e;
+  border-radius:4px;
+  padding:9px 12px;
+  font-family:'DM Mono',monospace;
+  font-size:0.78rem;
+  color:#f0ebe0;
+  outline:none;
+  transition:border-color 0.2s;
+}
+.field input:focus{border-color:#2e7d52;}
+.field input::placeholder{color:#3a5c3a;}
+
+.btn-test{
+  width:100%;
+  background:#2e7d52;
+  color:#fff;
+  border:none;
+  border-radius:4px;
+  padding:11px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;
+  font-style:italic;
+  cursor:pointer;
+  transition:background 0.2s;
+  margin-top:4px;
+}
+.btn-test:hover{background:#4caf80;}
+
+.test-msg{
+  margin-top:10px;
+  font-size:0.82rem;
+  padding:8px 12px;
+  border-radius:4px;
+  display:none;
+  line-height:1.5;
+}
+.test-msg.ok {background:rgba(46,125,82,0.1);color:#4caf80;display:block;}
+.test-msg.err{background:rgba(200,137,42,0.1);color:#e8a840;display:block;}
+
+.success-box{
+  background:rgba(46,125,82,0.08);
+  border:1px solid rgba(46,125,82,0.3);
+  border-radius:8px;
+  padding:20px 24px;
+  margin-top:20px;
+  display:none;
+}
+.success-box.visible{display:block;}
+.success-box p{color:#4caf80;font-size:0.9rem;margin:0;}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Logo -->
+  <div class="logo">
+    <svg viewBox="0 0 40 40" width="36" height="36" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="18" fill="#1a2e1a" stroke="#2e7d52" stroke-width="1.5"/>
+      <circle cx="20" cy="20" r="4" fill="#2e7d52"/>
+      <line x1="20" y1="16" x2="20" y2="8"  stroke="#4caf80" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="20" y1="24" x2="20" y2="32" stroke="#4caf80" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="16" y1="20" x2="8"  y2="20" stroke="#4caf80" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="24" y1="20" x2="32" y2="20" stroke="#4caf80" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="20" cy="8"  r="2.5" fill="#2e7d52"/>
+      <circle cx="20" cy="32" r="2.5" fill="#2e7d52"/>
+      <circle cx="8"  cy="20" r="2.5" fill="#2e7d52"/>
+      <circle cx="32" cy="20" r="2.5" fill="#2e7d52"/>
+    </svg>
+    <div>
+      <h1>Hyphælium</h1>
+      <p>Install the bookmarklet</p>
+    </div>
+  </div>
+
+  <!-- Step 1: Connect vault -->
+  <div class="step">
+    <div class="step-num">Step 1 — Connect your vault</div>
+    <h2>Sign in to your vault</h2>
+    <p>These are stored only in your browser. We never see them. You only need to do this once — your browser remembers them.</p>
+
+    <div class="test-section">
+      <h3>Your Supabase connection</h3>
+      <div class="field">
+        <label>Email address</label>
+        <input type="email" id="setup-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="setup-password" placeholder="Your Hyphælium password" autocomplete="current-password">
+      </div>
+      <button class="btn-test" id="btn-test">Test connection →</button>
+      <div class="test-msg" id="test-msg"></div>
+      <div class="success-box" id="success-box">
+        <p>✓ Signed in. Now drag the bookmark below to your bookmarks bar.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Drag bookmark -->
+  <div class="step">
+    <div class="step-num">Step 2 — Add to your bookmarks bar</div>
+    <h2>Drag this to your bar</h2>
+    <p>Drag the button below up to your browser's bookmarks bar. That's all. Hyphælium will be available in every browser tab from that moment.</p>
+    <p><strong>Make sure your bookmarks bar is visible first</strong> — see the instructions below for your browser.</p>
+
+    <div class="bookmark-btn-wrap">
+      <div class="drag-arrow">↑</div>
+      <a class="bookmark-btn" id="bookmarklet-link" href="#">
+        🌿 Hyphælium
+      </a>
+      <div class="drag-hint">Drag me to your bookmarks bar</div>
+    </div>
+
+    <!-- Browser-specific instructions -->
+    <div class="browser-tabs">
+      <button class="tab-btn active" onclick="showBrowser('chrome')">Chrome</button>
+      <button class="tab-btn" onclick="showBrowser('firefox')">Firefox</button>
+      <button class="tab-btn" onclick="showBrowser('safari')">Safari</button>
+      <button class="tab-btn" onclick="showBrowser('edge')">Edge</button>
+    </div>
+
+    <div class="browser-panel active" id="panel-chrome">
+      <ol>
+        <li>Press <strong>Ctrl+Shift+B</strong> (Windows) or <strong>Cmd+Shift+B</strong> (Mac) to show the bookmarks bar</li>
+        <li>Drag the <strong>🌿 Hyphælium</strong> button above up to your bookmarks bar</li>
+        <li>Drop it — done</li>
+      </ol>
+    </div>
+
+    <div class="browser-panel" id="panel-firefox">
+      <ol>
+        <li>Press <strong>Ctrl+Shift+B</strong> (Windows) or <strong>Cmd+Shift+B</strong> (Mac) to show the bookmarks toolbar</li>
+        <li>Drag the <strong>🌿 Hyphælium</strong> button above up to your bookmarks toolbar</li>
+        <li>Drop it — done</li>
+      </ol>
+    </div>
+
+    <div class="browser-panel" id="panel-safari">
+      <ol>
+        <li>Go to <strong>View → Show Favourites Bar</strong></li>
+        <li>Drag the <strong>🌿 Hyphælium</strong> button above up to your favourites bar</li>
+        <li>Drop it — done</li>
+      </ol>
+      <div class="safari-note">
+        Safari note: If dragging does not work, right-click the button and choose "Add to Favourites".
+      </div>
+    </div>
+
+    <div class="browser-panel" id="panel-edge">
+      <ol>
+        <li>Press <strong>Ctrl+Shift+B</strong> to show the favourites bar</li>
+        <li>Drag the <strong>🌿 Hyphælium</strong> button above up to your favourites bar</li>
+        <li>Drop it — done</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Step 3: Use it -->
+  <div class="step">
+    <div class="step-num">Step 3 — Use it</div>
+    <h2>That's everything</h2>
+    <p>Go to any AI platform — Claude, ChatGPT, Gemini, Copilot, Perplexity, or any other. When a conversation is worth keeping, click <strong>🌿 Hyphælium</strong> in your bookmarks bar.</p>
+    <p>The first time you click on a new browser it will ask for your credentials. After that — one click, one breadcrumb, always findable.</p>
+    <p><strong>Keyboard shortcut:</strong> Most browsers let you assign a keyboard shortcut to any bookmark. Right-click the Hyphælium bookmark → Edit → add a shortcut key.</p>
+  </div>
+
+</div>
+
+<script>
+// ── Set the bookmarklet href ───────────────────
+// This is the minified bookmarklet code
+const BOOKMARKLET = `javascript:(function(){'use strict';const STORAGE_URL='hypha-url';const STORAGE_KEY='hypha-key';const PLATFORMS={'claude.ai':'Claude','chat.openai.com':'ChatGPT','chatgpt.com':'ChatGPT','gemini.google.com':'Gemini','copilot.microsoft.com':'Copilot','perplexity.ai':'Perplexity'};const hostname=location.hostname;const matchKey=Object.keys(PLATFORMS).find(k=>hostname.includes(k));let PLATFORM=matchKey?PLATFORMS[matchKey]:null;if(!PLATFORM){const tl=document.title.toLowerCase();const pl=location.pathname.toLowerCase();if(tl.includes('chat')||tl.includes('ai')||pl.includes('chat')||pl.includes('conversation')){PLATFORM=hostname.replace('www.','').split('.')[0];PLATFORM=PLATFORM.charAt(0).toUpperCase()+PLATFORM.slice(1);}}if(!PLATFORM){showToast('\u26a0 Not an AI platform \u2014 navigate to Claude, ChatGPT or similar first','warn');return;}const supaUrl=localStorage.getItem(STORAGE_URL);const supaKey=localStorage.getItem(STORAGE_KEY);if(!supaUrl||!supaKey){showSetupPrompt();return;}const title=readTitle();const topic=classifyTopic(title);const depth=snapshotDepth();const boundary=snapshotBoundary();showToast('\ud83c\udf3f Saving...','saving');saveBreadcrumb({captured_at:new Date().toISOString(),platform:PLATFORM,route_path:location.href,identity_tag:identityTag(title),topic:topic,depth:depth,boundary_count:boundary?1:0,boundary_flag:boundary});function readTitle(){const raw=document.title||'';return raw.replace(/\s*[-|\u2013]\s*(Claude|ChatGPT|Gemini|Copilot|Perplexity).*/i,'').replace(/^(Claude|ChatGPT|Gemini|Copilot|Perplexity)\s*[-|\u2013]\s*/i,'').trim()||'conversation';}function identityTag(t){return t.toLowerCase().replace(/[^\w\s'-]/g,'').trim().slice(0,60)||'untitled';}function classifyTopic(txt){const t=(txt||'').toLowerCase();const rules=[['code',['javascript','python','function','const','import','sql','api','code']],['writing',['write','draft','essay','article','blog','email','letter','report']],['analysis',['analyse','analyze','compare','evaluate','assess','review']],['planning',['plan','strategy','roadmap','schedule','project']],['legal',['legal','policy','regulation','compliance','statutory','law']],['finance',['budget','cost','revenue','profit','invoice','spend','financial']],['research',['research','explain','what is','how does','why','history','tell me']],['creative',['story','poem','creative','design','imagine','fiction']]];for(const[topic,keywords]of rules){if(keywords.some(k=>t.includes(k)))return topic;}return 'general';}function snapshotDepth(){const sels=['[data-testid="user-message"]','[data-message-author-role="user"]','.user-query-text','.query-text','[class*="user-message"]','[class*="human-message"]'];for(const sel of sels){try{const els=document.querySelectorAll(sel);if(els.length>0)return els.length;}catch(e){}}const main=document.querySelector('main')||document.body;return Math.floor(main.querySelectorAll('p').length/4);}function snapshotBoundary(){const phrases=['my knowledge cutoff','my training data','as of my last update','as of my knowledge','you may want to verify','this may have changed','i cannot access real-time',"i don't have access to current",'please verify this'];const sels=['[data-testid="assistant-message"]','[data-message-author-role="assistant"]','.model-response-text','.prose','[class*="assistant"]'];for(const sel of sels){try{const els=document.querySelectorAll(sel);if(!els.length)continue;const lt=(els[els.length-1].innerText||'').toLowerCase();if(phrases.some(p=>lt.includes(p)))return true;break;}catch(e){}}return false;}async function saveBreadcrumb(record){try{const res=await fetch(supaUrl.replace(/\/+$/,'')+'/rest/v1/hyphaelium_captures',{method:'POST',headers:{'Content-Type':'application/json','apikey':supaKey,'Authorization':'Bearer '+supaKey,'Prefer':'return=minimal'},body:JSON.stringify(record)});if(res.ok||res.status===201){showToast('\ud83c\udf3f Saved \u00b7 '+PLATFORM+(record.depth>1?' \u00b7 depth '+record.depth:'')+(record.boundary_flag?' \u00b7 boundary':''),'ok');}else if(res.status===401){showToast('\u26a0 Key rejected \u2014 re-enter credentials','warn');}else{queueLocally(record);showToast('\ud83c\udf3f Saved locally \u00b7 will sync when connected','queued');}}catch(e){queueLocally(record);showToast('\ud83c\udf3f Saved locally \u00b7 will sync when connected','queued');}}function queueLocally(record){try{const q=JSON.parse(localStorage.getItem('hypha-queue')||'[]');q.push({...record,queuedAt:new Date().toISOString()});localStorage.setItem('hypha-queue',JSON.stringify(q));}catch(e){}}function showSetupPrompt(){const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(14,11,6,0.88);z-index:2147483647;display:flex;align-items:center;justify-content:center;font-family:sans-serif;';o.innerHTML='<div style="background:#1a1208;border:1px solid #2e7d52;border-radius:10px;padding:32px;max-width:380px;width:90%;color:#f4efe2;"><div style="font-size:1.1rem;font-weight:500;margin-bottom:8px;font-family:Georgia,serif;font-style:italic;">Welcome to Hyph\u00e6lium</div><div style="font-size:0.82rem;color:#9a8e7a;margin-bottom:20px;line-height:1.6;">Enter your Supabase credentials once to connect your vault.</div><div style="margin-bottom:10px;"><div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;color:#5a7a5a;margin-bottom:4px;">Email address</div><input id="hypha-setup-url" type="text" placeholder="https://xxxxx.supabase.co" style="width:100%;background:#0e0b06;border:1px solid #2e7d52;border-radius:4px;padding:8px 10px;color:#f4efe2;font-size:0.82rem;outline:none;box-sizing:border-box;"></div><div style="margin-bottom:18px;"><div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:0.14em;color:#5a7a5a;margin-bottom:4px;">Password</div><input id="hypha-setup-key" type="password" placeholder="eyJ\u2026" style="width:100%;background:#0e0b06;border:1px solid #2e7d52;border-radius:4px;padding:8px 10px;color:#f4efe2;font-size:0.82rem;outline:none;box-sizing:border-box;"></div><div style="display:flex;gap:8px;"><button id="hypha-setup-save" style="flex:1;background:#2e7d52;color:#fff;border:none;border-radius:4px;padding:10px;font-size:0.88rem;cursor:pointer;">Connect vault \u2192</button><button id="hypha-setup-cancel" style="background:transparent;border:1px solid #2e7d52;color:#4caf80;border-radius:4px;padding:10px 14px;font-size:0.82rem;cursor:pointer;">Cancel</button></div></div>';document.body.appendChild(o);document.getElementById('hypha-setup-url').focus();document.getElementById('hypha-setup-save').addEventListener('click',()=>{const url=document.getElementById('hypha-setup-url').value.trim().replace(/\/+$/,'');const key=document.getElementById('hypha-setup-key').value.trim();if(!url||!key)return;localStorage.setItem(STORAGE_URL,url);localStorage.setItem(STORAGE_KEY,key);o.remove();showToast('\u2713 Connected \u2014 click your bookmark again to save','ok');});document.getElementById('hypha-setup-cancel').addEventListener('click',()=>o.remove());}function showToast(message,type){const ex=document.getElementById('hypha-bm-toast');if(ex)ex.remove();const c={ok:{bg:'#1a2e1a',border:'#2e7d52',text:'#c8e6c9'},warn:{bg:'#1a1200',border:'#c8892a',text:'#e8c878'},queued:{bg:'#1a1a10',border:'#c8892a',text:'#c8e690'},saving:{bg:'#1a2e1a',border:'#2e7d52',text:'#6a8e6a'}}[type]||{bg:'#1a2e1a',border:'#2e7d52',text:'#c8e6c9'};const t=document.createElement('div');t.id='hypha-bm-toast';t.textContent=message;t.style.cssText='position:fixed;bottom:28px;right:28px;z-index:2147483647;background:'+c.bg+';border:1px solid '+c.border+';color:'+c.text+';padding:10px 18px;border-radius:8px;font-family:Courier New,monospace;font-size:12px;line-height:1.4;box-shadow:0 4px 20px rgba(0,0,0,0.4);opacity:0;transform:translateY(8px);transition:opacity 0.2s ease,transform 0.2s ease;pointer-events:none;white-space:nowrap;max-width:320px;';document.body.appendChild(t);requestAnimationFrame(()=>requestAnimationFrame(()=>{t.style.opacity='1';t.style.transform='translateY(0)';}));const d=type==='saving'?60000:3500;setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(8px)';setTimeout(()=>t.remove(),250);},d);}})();`;
+
+document.getElementById('bookmarklet-link').href = BOOKMARKLET;
+
+// ── Credentials test ──────────────────────────
+document.getElementById('btn-test').addEventListener('click', async () => {
+  const url = document.getElementById('setup-url').value.trim().replace(/\/+$/, '');
+  const key = document.getElementById('setup-key').value.trim();
+  const msg = document.getElementById('test-msg');
+  const box = document.getElementById('success-box');
+
+  if (!url || !key) { testMsg('Please fill in both fields.', 'err'); return; }
+  if (!url.startsWith('https://')) { testMsg('URL must start with https://', 'err'); return; }
+  if (!key.startsWith('eyJ')) { testMsg('Key must start with eyJ — use the anon/public key', 'err'); return; }
+
+  testMsg('Testing…', 'ok');
+
+  try {
+    const r = await fetch(url + '/rest/v1/', {
+      headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
+    });
+    if (r.status === 401) { testMsg('❌ Key rejected. Use the anon/public key from Supabase → Settings → API.', 'err'); return; }
+  } catch(e) { testMsg('❌ Cannot reach Supabase. Check your Project URL.', 'err'); return; }
+
+  // Token already saved above
+
+  msg.style.display = 'none';
+  box.classList.add('visible');
+});
+
+function testMsg(txt, type) {
+  const el = document.getElementById('test-msg');
+  el.textContent = txt;
+  el.className = 'test-msg ' + type;
+  document.getElementById('success-box').classList.remove('visible');
+}
+
+// ── Browser tab switching ─────────────────────
+function showBrowser(name) {
+  document.querySelectorAll('.browser-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── Auto-detect browser ───────────────────────
+const ua = navigator.userAgent;
+if (ua.includes('Firefox'))      showBrowserSilent('firefox');
+else if (ua.includes('Edg/'))    showBrowserSilent('edge');
+else if (ua.includes('Safari') && !ua.includes('Chrome')) showBrowserSilent('safari');
+
+function showBrowserSilent(name) {
+  document.querySelectorAll('.browser-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.querySelector(`.tab-btn[onclick*="${name}"]`).classList.add('active');
+}
+
+// ── Pre-fill if already signed in ─────
+const savedUrl = localStorage.getItem('hypha-url');
+const savedKey = localStorage.getItem('hypha-key');
+if (savedUrl) document.getElementById('setup-url').value = savedUrl;
+if (savedKey) {
+  document.getElementById('setup-key').value = savedKey;
+  document.getElementById('success-box').classList.add('visible');
+  document.getElementById('success-box').querySelector('p').textContent =
+    '✓ Already connected. Your vault is ready. Drag the bookmark above to your bar.';
+}
+</script>
+</body>
+</html>

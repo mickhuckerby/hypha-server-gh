@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<!-- Copyright 2026 Hyphælium. All rights reserved. privacy@hyphaelium.com -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyphælium — Your Vault</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --page:#f5f2eb; --page-warm:#ede9df; --card:#ffffff;
+  --card-blue:#e8f0fb; --card-hover:#ddeaf8;
+  --border:#dde3ed; --border-w:#c8d0e0;
+  --navy:#1a2744; --navy-mid:#2e4070; --navy-lt:#4a5a80;
+  --slate:#6a7a94; --mist:#9aaabb;
+  --blue:#2563a8; --blue-lt:#4a80c4; --blue-pale:#b8d0f0;
+  --blue-glow:rgba(37,99,168,0.12);
+  --green:#2e7d52; --green-lt:#4caf80;
+  --amber:#c8892a;
+  --text:#1a2744; --text-mid:#3a4a64; --text-lt:#6a7a94; --text-dim:#9aaabb;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--page);color:var(--text);font-family:"DM Sans",sans-serif;font-size:14px;min-height:100vh;line-height:1.6;}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse at 15% 20%,rgba(37,99,168,0.05) 0%,transparent 55%),radial-gradient(ellipse at 85% 80%,rgba(46,125,82,0.04) 0%,transparent 45%);pointer-events:none;z-index:0;animation:ambientShift 20s ease-in-out infinite alternate;}
+@keyframes ambientShift{from{opacity:0.6;}to{opacity:1;}}
+@keyframes breathe{0%,100%{opacity:0.7;transform:scale(1);}50%{opacity:1;transform:scale(1.05);}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(46,125,82,0.4);}50%{box-shadow:0 0 0 7px rgba(46,125,82,0);}}
+@keyframes shimmer{0%,100%{border-color:var(--border);}50%{border-color:var(--blue-pale);}}
+@keyframes rise{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+@keyframes glowSweep{0%,100%{box-shadow:0 2px 12px rgba(37,99,168,0.15);}50%{box-shadow:0 4px 24px rgba(37,99,168,0.3);}}
+#screen-signin{position:fixed;inset:0;background:var(--page);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;}
+.signin-box{width:100%;max-width:380px;animation:rise 0.6s ease both;}
+.signin-logo{display:flex;align-items:center;gap:16px;margin-bottom:40px;}
+.signin-logo svg{animation:breathe 4s ease-in-out infinite;filter:drop-shadow(0 2px 10px rgba(37,99,168,0.2));}
+.signin-logo h1{font-family:"Cormorant Garamond",serif;font-size:2rem;font-weight:400;font-style:italic;color:var(--navy);letter-spacing:0.02em;line-height:1;}
+.signin-logo p{font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--slate);margin-top:5px;}
+.signin-rule{font-family:"Cormorant Garamond",serif;font-size:1rem;font-style:italic;color:var(--navy-lt);margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.si-field{margin-bottom:12px;}
+.si-field label{display:block;font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--slate);margin-bottom:6px;}
+.si-field input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-family:"DM Mono",monospace;font-size:0.78rem;color:var(--navy);outline:none;transition:border-color 0.25s,box-shadow 0.25s;}
+.si-field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,168,0.08);}
+.si-field input::placeholder{color:var(--mist);}
+.btn-open{width:100%;background:var(--navy);color:#fff;border:none;border-radius:6px;padding:12px;font-family:"Cormorant Garamond",serif;font-size:1rem;font-style:italic;letter-spacing:0.06em;cursor:pointer;transition:background 0.2s,transform 0.15s;margin-top:4px;animation:glowSweep 3s ease-in-out infinite;}
+.btn-open:hover{background:var(--navy-mid);transform:translateY(-1px);animation:none;box-shadow:0 6px 20px rgba(26,39,68,0.25);}
+.si-msg{margin-top:10px;font-size:0.78rem;padding:8px 12px;border-radius:5px;display:none;line-height:1.5;}
+.si-msg.ok{background:rgba(46,125,82,0.08);color:var(--green);display:block;border:1px solid rgba(46,125,82,0.15);}
+.si-msg.err{background:rgba(200,89,42,0.06);color:#c85a2a;display:block;border:1px solid rgba(200,89,42,0.15);}
+#screen-vault{display:none;position:relative;z-index:1;max-width:880px;margin:0 auto;padding:40px 28px 80px;}
+.masthead{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border);}
+.masthead-left a{font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mist);text-decoration:none;display:block;margin-bottom:10px;transition:color 0.2s;}
+.masthead-left a:hover{color:var(--blue);}
+.masthead-left h1{font-family:"Cormorant Garamond",serif;font-size:2.4rem;font-weight:400;font-style:italic;color:var(--navy);line-height:1;letter-spacing:-0.01em;margin-bottom:6px;}
+.masthead-sub{font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--mist);}
+.connected-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:6px;animation:pulse 2.5s ease-in-out infinite;vertical-align:middle;}
+.masthead-stats{display:flex;gap:28px;text-align:right;}
+.mstat-val{font-family:"Cormorant Garamond",serif;font-size:2rem;font-weight:400;font-style:italic;color:var(--blue);line-height:1;}
+.mstat-lbl{font-family:"DM Mono",monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mist);margin-top:3px;}
+.search-row{display:flex;gap:10px;margin-bottom:16px;}
+.search-wrap{flex:1;position:relative;}
+.search-wrap input{width:100%;background:var(--card);border:1px solid var(--border);border-radius:7px;padding:11px 36px 11px 14px;font-family:"DM Sans",sans-serif;font-size:0.88rem;font-weight:300;color:var(--navy);outline:none;transition:border-color 0.25s,box-shadow 0.25s;animation:shimmer 4s ease-in-out 1s 3;}
+.search-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,168,0.08);animation:none;}
+.search-wrap input::placeholder{color:var(--mist);font-style:italic;}
+.search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--mist);cursor:pointer;font-size:1rem;padding:2px 4px;display:none;transition:color 0.18s;}
+.search-clear.visible{display:block;}
+.search-clear:hover{color:var(--navy);}
+.view-toggle{display:flex;gap:4px;}
+.btn-view{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:9px 12px;cursor:pointer;color:var(--slate);font-size:0.82rem;transition:all 0.2s;font-family:"DM Mono",monospace;}
+.btn-view.active{background:var(--card-blue);border-color:var(--blue-pale);color:var(--blue);}
+.btn-view:hover{border-color:var(--blue-pale);color:var(--navy);}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px;}
+.filter-btn{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--slate);cursor:pointer;transition:all 0.2s;}
+.filter-btn:hover{border-color:var(--blue-pale);color:var(--navy);background:var(--card-blue);}
+.filter-btn.active{background:var(--card-blue);border-color:var(--blue);color:var(--blue);}
+.jump-nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.jump-nav:empty{display:none;}
+.jump-link{font-family:"DM Mono",monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate);text-decoration:none;padding:3px 10px;border:1px solid var(--border);border-radius:12px;transition:all 0.2s;background:var(--card);}
+.jump-link:hover{border-color:var(--blue-pale);color:var(--blue);background:var(--card-blue);}
+.result-count{font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.1em;color:var(--mist);margin-bottom:16px;min-height:16px;}
+.result-count em{color:var(--blue);font-style:normal;}
+.date-divider{font-family:"Cormorant Garamond",serif;font-size:0.95rem;font-style:italic;color:var(--slate);padding:20px 0 10px;display:flex;align-items:center;gap:14px;animation:rise 0.3s ease both;}
+.date-divider:first-child{padding-top:0;}
+.date-divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.crumb{display:block;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 44px 14px 16px;margin-bottom:8px;text-decoration:none;color:inherit;position:relative;transition:background 0.25s,border-color 0.25s,transform 0.2s,box-shadow 0.25s;animation:rise 0.3s ease both;}
+.crumb::before{content:"";position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:0 2px 2px 0;background:var(--blue-pale);opacity:0;transition:opacity 0.25s,top 0.25s,bottom 0.25s,background 0.25s;}
+.crumb:hover{background:var(--card-blue);border-color:var(--blue-pale);transform:translateX(4px);box-shadow:0 4px 20px rgba(37,99,168,0.1),-2px 0 0 var(--blue-pale);}
+.crumb:hover::before{opacity:1;top:10%;bottom:10%;background:var(--blue);}
+.crumb-top{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.platform-badge{font-family:"DM Mono",monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:2px 8px;border-radius:10px;flex-shrink:0;transition:transform 0.2s;}
+.crumb:hover .platform-badge{transform:scale(1.05);}
+.badge-claude{background:rgba(201,100,66,0.1);color:#c96442;border:1px solid rgba(201,100,66,0.2);}
+.badge-chatgpt{background:rgba(16,163,127,0.1);color:#10a37f;border:1px solid rgba(16,163,127,0.2);}
+.badge-gemini{background:rgba(74,144,226,0.1);color:#4a90e2;border:1px solid rgba(74,144,226,0.2);}
+.badge-copilot{background:rgba(108,159,230,0.1);color:#6c9fe6;border:1px solid rgba(108,159,230,0.2);}
+.badge-perplexity{background:rgba(155,138,251,0.1);color:#9b8afb;border:1px solid rgba(155,138,251,0.2);}
+.badge-custom{background:rgba(37,99,168,0.1);color:var(--blue);border:1px solid rgba(37,99,168,0.2);}
+.topic-badge{font-family:"DM Mono",monospace;font-size:0.58rem;letter-spacing:0.08em;color:var(--mist);text-transform:uppercase;}
+.crumb-time{font-family:"DM Mono",monospace;font-size:0.6rem;color:var(--mist);margin-left:auto;}
+.depth-pip{display:flex;gap:2px;margin-left:6px;}
+.pip{width:4px;height:4px;border-radius:50%;background:var(--blue-pale);}
+.pip.active{background:var(--blue);}
+.boundary-mark{font-family:"DM Mono",monospace;font-size:0.56rem;color:var(--amber);border:1px solid rgba(200,137,42,0.3);padding:1px 6px;border-radius:8px;letter-spacing:0.06em;}
+.crumb-tag{font-family:"Cormorant Garamond",serif;font-size:1.05rem;font-weight:400;color:var(--navy);line-height:1.3;margin-bottom:4px;}
+.crumb-path{font-family:"DM Mono",monospace;font-size:0.6rem;color:var(--mist);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%;}
+.return-arrow{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--border-w);font-size:1rem;transition:color 0.2s,transform 0.2s;}
+.crumb:hover .return-arrow{color:var(--blue);transform:translateY(-50%) translateX(4px);}
+.compact-crumb{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--border);text-decoration:none;color:inherit;transition:background 0.18s;border-radius:4px;}
+.compact-crumb:hover{background:var(--card-blue);}
+.compact-platform{font-family:"DM Mono",monospace;font-size:0.58rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--mist);width:72px;flex-shrink:0;}
+.compact-tag{font-family:"Cormorant Garamond",serif;font-size:0.95rem;color:var(--navy);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.compact-time{font-family:"DM Mono",monospace;font-size:0.58rem;color:var(--mist);flex-shrink:0;}
+.compact-arrow{color:var(--border-w);font-size:0.8rem;transition:color 0.18s;flex-shrink:0;}
+.compact-crumb:hover .compact-arrow{color:var(--blue);}
+.compact-group{font-family:"Cormorant Garamond",serif;font-size:0.82rem;font-style:italic;color:var(--slate);padding:12px 12px 6px;border-bottom:1px solid var(--border);background:var(--page-warm);}
+.state-msg{text-align:center;padding:60px 20px;color:var(--mist);font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.2rem;animation:rise 0.4s ease both;}
+.state-msg span{display:block;font-family:"DM Mono",monospace;font-style:normal;font-size:0.65rem;color:var(--mist);margin-top:8px;letter-spacing:0.1em;}
+.vault-footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.vault-footer p{font-family:"Cormorant Garamond",serif;font-size:0.85rem;font-style:italic;color:var(--mist);}
+.btn-signout{background:transparent;border:1px solid var(--border);border-radius:5px;padding:6px 14px;font-family:"DM Mono",monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--mist);cursor:pointer;transition:all 0.2s;}
+.btn-signout:hover{border-color:var(--blue-pale);color:var(--navy);background:var(--card-blue);}
+@media(max-width:600px){.masthead{flex-direction:column;align-items:flex-start;gap:16px;}#screen-vault{padding:24px 16px 60px;}.masthead-left h1{font-size:1.8rem;}}
+</style>
+</head>
+<body>
+
+<div id="screen-signin">
+  <div class="signin-box">
+    <div class="signin-logo">
+      <svg viewBox="0 0 48 48" width="44" height="44" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="22" fill="#e8f0fb" stroke="#2563a8" stroke-width="1.5"/>
+        <circle cx="24" cy="24" r="5" fill="#2563a8"/>
+        <line x1="24" y1="19" x2="24" y2="9"  stroke="#2563a8" stroke-width="2" stroke-linecap="round"/>
+        <line x1="24" y1="29" x2="24" y2="39" stroke="#2563a8" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19" y1="24" x2="9"  y2="24" stroke="#2563a8" stroke-width="2" stroke-linecap="round"/>
+        <line x1="29" y1="24" x2="39" y2="24" stroke="#2563a8" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="24" cy="9"  r="3" fill="#4a80c4"/>
+        <circle cx="24" cy="39" r="3" fill="#4a80c4"/>
+        <circle cx="9"  cy="24" r="3" fill="#4a80c4"/>
+        <circle cx="39" cy="24" r="3" fill="#4a80c4"/>
+      </svg>
+      <div><h1>Hyphælium</h1><p>Your thread of thought</p></div>
+    </div>
+    <div class="signin-rule">Open your vault</div>
+    <div class="si-field">
+      <label>Email address</label>
+      <input type="email" id="si-email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="si-field">
+      <label>Password</label>
+      <input type="password" id="si-password" placeholder="Your Hyphælium password" autocomplete="current-password">
+    </div>
+    <button class="btn-open" id="btn-open">Open Vault →</button>
+    <div class="si-msg" id="si-msg"></div>
+  </div>
+</div>
+
+<div id="screen-vault">
+  <div class="masthead">
+    <div class="masthead-left">
+      <a href="https://hyphaelium.com">← Hyphælium</a>
+      <h1>Your Vault</h1>
+      <div class="masthead-sub"><span class="connected-dot"></span>A record of every thread of thought</div>
+    </div>
+    <div class="masthead-stats">
+      <div><div class="mstat-val" id="stat-total">—</div><div class="mstat-lbl">Breadcrumbs</div></div>
+      <div><div class="mstat-val" id="stat-week">—</div><div class="mstat-lbl">This week</div></div>
+    </div>
+  </div>
+  <div class="search-row">
+    <div class="search-wrap">
+      <input type="text" id="search-input" placeholder="Search your breadcrumbs…" autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="search-clear" title="Clear">✕</button>
+    </div>
+    <div class="view-toggle">
+      <button class="btn-view active" id="btn-cards" title="Cards">▤</button>
+      <button class="btn-view" id="btn-compact" title="Compact">☰</button>
+    </div>
+  </div>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="Claude">Claude</button>
+    <button class="filter-btn" data-filter="ChatGPT">ChatGPT</button>
+    <button class="filter-btn" data-filter="Gemini">Gemini</button>
+    <button class="filter-btn" data-filter="Copilot">Copilot</button>
+    <button class="filter-btn" data-filter="Perplexity">Perplexity</button>
+    <button class="filter-btn" data-filter="topic:legal">Legal</button>
+    <button class="filter-btn" data-filter="topic:code">Code</button>
+    <button class="filter-btn" data-filter="topic:research">Research</button>
+    <button class="filter-btn" data-filter="topic:planning">Planning</button>
+    <button class="filter-btn" data-filter="topic:writing">Writing</button>
+    <button class="filter-btn" data-filter="depth:deep">Deep threads</button>
+    <button class="filter-btn" data-filter="boundary">Boundaries</button>
+  </div>
+  <div class="jump-nav" id="jump-nav"></div>
+  <div class="result-count" id="result-count"></div>
+  <div id="trail"></div>
+  <div class="vault-footer">
+    <p>The knowledge stays where it was made</p>
+    <button class="btn-signout" id="btn-signout">Sign out</button>
+  </div>
+</div>
+
+<script>
+let supaUrl="",supaKey="",allCrumbs=[],activeFilter="all",searchQuery="",viewMode="cards";
+window.addEventListener("DOMContentLoaded",()=>{
+  const token=localStorage.getItem("hypha-token");
+  if(token){openVault();}
+  document.getElementById("btn-open").addEventListener("click",handleSignIn);
+  document.getElementById("btn-signout").addEventListener("click",handleSignOut);
+  ["si-email","si-password"].forEach(id=>document.getElementById(id).addEventListener("keydown",e=>{if(e.key==="Enter")handleSignIn();}));
+  const si=document.getElementById("search-input"),sc=document.getElementById("search-clear");
+  si.addEventListener("input",()=>{searchQuery=si.value.trim().toLowerCase();sc.classList.toggle("visible",searchQuery.length>0);renderTrail(allCrumbs);});
+  sc.addEventListener("click",()=>{si.value="";searchQuery="";sc.classList.remove("visible");si.focus();renderTrail(allCrumbs);});
+  document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key==="f"){e.preventDefault();si.focus();si.select();}if(e.key==="Escape"&&document.activeElement===si)sc.click();});
+  document.getElementById("filters").addEventListener("click",e=>{const b=e.target.closest(".filter-btn");if(!b)return;document.querySelectorAll(".filter-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeFilter=b.dataset.filter;renderTrail(allCrumbs);});
+  document.getElementById("btn-cards").addEventListener("click",()=>{viewMode="cards";document.getElementById("btn-cards").classList.add("active");document.getElementById("btn-compact").classList.remove("active");renderTrail(allCrumbs);});
+  document.getElementById("btn-compact").addEventListener("click",()=>{viewMode="compact";document.getElementById("btn-compact").classList.add("active");document.getElementById("btn-cards").classList.remove("active");renderTrail(allCrumbs);});
+});
+async function handleSignIn(){
+  const email=document.getElementById("si-email").value.trim().toLowerCase();
+  const password=document.getElementById("si-password").value;
+  if(!email||!password){siMsg("Please fill in both fields.","err");return;}
+  if(!email.includes("@")){siMsg("Please enter a valid email address.","err");return;}
+  if(password.length<8){siMsg("Password must be at least 8 characters.","err");return;}
+  siMsg("Opening your vault…","ok");
+  try{
+    const r=await fetch("https://hypha-server.onrender.com/login",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({email,password})
+    });
+    const data=await r.json();
+    if(!r.ok){siMsg("❌ "+(data.error||"Sign in failed — check your email and password."),"err");return;}
+    siMsg("✓ Connected","ok");
+    localStorage.setItem("hypha-token",data.token);
+    localStorage.setItem("hypha-email",email);
+    setTimeout(openVault,400);
+  }catch(e){siMsg("❌ Cannot reach server: "+e.message,"err");return;}
+}
+function handleSignOut(){localStorage.removeItem("hypha-token");localStorage.removeItem("hypha-email");allCrumbs=[];document.getElementById("screen-vault").style.display="none";document.getElementById("screen-signin").style.display="flex";document.getElementById("si-password").value="";}
+async function openVault(){
+  document.getElementById("screen-signin").style.display="none";document.getElementById("screen-vault").style.display="block";
+  showLoading();
+  try{allCrumbs=await fetchCrumbs();updateStats(allCrumbs);renderTrail(allCrumbs);}catch(e){showError(e.message);}
+}
+async function syncQ(){
+  try{const q=JSON.parse(localStorage.getItem("hypha-queue")||"[]");if(!q.length)return;const rem=[];
+  for(const r of q){try{const res=await fetch(supaUrl.replace(/\/+$/,"")+"/rest/v1/hyphaelium_captures",{method:"POST",headers:{"Content-Type":"application/json","apikey":supaKey,"Authorization":"Bearer "+supaKey,"Prefer":"return=minimal"},body:JSON.stringify(r)});if(!res.ok)rem.push(r);}catch(e){rem.push(r);}}
+  localStorage.setItem("hypha-queue",JSON.stringify(rem));}catch(e){}
+}
+async function fetchCrumbs(){
+  const token=localStorage.getItem("hypha-token");
+  if(!token)throw new Error("Not signed in — please sign in again.");
+  const res=await fetch("https://hypha-server.onrender.com/crumbs",{
+    headers:{"Authorization":"Bearer "+token}
+  });
+  if(res.status===401)throw new Error("Session expired — please sign in again.");
+  if(!res.ok)throw new Error("Server error "+res.status);
+  const data=await res.json();
+  return Array.isArray(data.crumbs)?data.crumbs:[];
+}
+function updateStats(c){const w=Date.now()-7*24*60*60*1000;document.getElementById("stat-total").textContent=c.length;document.getElementById("stat-week").textContent=c.filter(x=>new Date(x.captured_at)>w).length;}
+function applyFilters(c){let v=c;if(activeFilter!=="all"){if(activeFilter.startsWith("topic:"))v=v.filter(x=>x.topic===activeFilter.slice(6));else if(activeFilter==="depth:deep")v=v.filter(x=>(x.depth||0)>=5);else if(activeFilter==="boundary")v=v.filter(x=>x.boundary_flag);else v=v.filter(x=>x.platform===activeFilter);}if(searchQuery)v=v.filter(x=>[x.identity_tag||"",x.topic||"",x.platform||"",x.route_path||""].join(" ").toLowerCase().includes(searchQuery));return v;}
+function groupLabel(d){const now=new Date(),today=new Date(now);today.setHours(0,0,0,0);const yesterday=new Date(today);yesterday.setDate(today.getDate()-1);const wk=new Date(today);wk.setDate(today.getDate()-today.getDay());const ms=new Date(now.getFullYear(),now.getMonth(),1);const lm=new Date(now.getFullYear(),now.getMonth()-1,1);const t=new Date(d);t.setHours(0,0,0,0);const ts=t.getTime();if(ts===today.getTime())return"Today";if(ts===yesterday.getTime())return"Yesterday";if(t>=wk)return"Earlier this week";if(t>=ms)return"Earlier this month";if(t>=lm)return"Last month";return d.toLocaleDateString("en-GB",{month:"long",year:"numeric"});}
+function renderTrail(crumbs){const trail=document.getElementById("trail"),jn=document.getElementById("jump-nav"),ce=document.getElementById("result-count");const v=applyFilters(crumbs);ce.innerHTML=(searchQuery||activeFilter!=="all")?"<em>"+v.length+"</em> of "+crumbs.length+" breadcrumbs":"";if(!v.length){trail.innerHTML="<div class=\"state-msg\">"+(searchQuery?"Nothing found for \""+esc(searchQuery)+"\"":"No breadcrumbs here yet")+"<span>"+(searchQuery?"Try different words":"They will appear as you explore")+"</span></div>";jn.innerHTML="";return;}const groups=new Map();v.forEach(c=>{const l=groupLabel(new Date(c.captured_at));if(!groups.has(l))groups.set(l,[]);groups.get(l).push(c);});jn.innerHTML=groups.size>2?Array.from(groups.keys()).map((l,i)=>"<a class=\"jump-link\" href=\"#group-"+i+"\">" +esc(l)+" ("+groups.get(l).length+")</a>").join(""):"";let html="",gi=0;groups.forEach((items,label)=>{if(viewMode==="cards"){html+="<div class=\"date-divider\" id=\"group-"+gi+"\">"+esc(label)+"</div>";items.forEach((c,i)=>{html+=renderCard(c,i*0.025);});}else{html+="<div class=\"compact-group\" id=\"group-"+gi+"\">"+esc(label)+" · "+items.length+"</div>";items.forEach(c=>{html+=renderCompact(c);});}gi++;});trail.innerHTML=html;}
+function renderCard(c,delay){const pk=(c.platform||"").toLowerCase().replace(/\s/g,"");const bc={claude:"badge-claude",chatgpt:"badge-chatgpt",gemini:"badge-gemini",copilot:"badge-copilot",perplexity:"badge-perplexity"}[pk]||"badge-custom";const time=new Date(c.captured_at).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});const tag=c.identity_tag?cap(c.identity_tag):"Untitled conversation";const depth=Math.min(c.depth||0,5);const pips=depth>0?"<span class=\"depth-pip\">"+Array.from({length:5},(_,i)=>"<span class=\"pip"+(i<depth?" active":"")+"\"></span>").join("")+"</span>":"";const bnd=c.boundary_flag?"<span class=\"boundary-mark\">boundary</span>":"";return "<a class=\"crumb\" href=\""+esc(c.route_path||"")+"\" target=\"_blank\" rel=\"noopener\" style=\"animation-delay:"+delay+"s\"><div class=\"crumb-top\"><span class=\"platform-badge "+bc+"\">"+esc(c.platform)+"</span><span class=\"topic-badge\">"+esc(c.topic||"")+"</span>"+pips+bnd+"<span class=\"crumb-time\">"+time+"</span></div><div class=\"crumb-tag\">"+esc(tag)+"</div><div class=\"crumb-path\">"+esc(c.route_path||"")+"</div><span class=\"return-arrow\">→</span></a>";}
+function renderCompact(c){const time=new Date(c.captured_at).toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});return "<a class=\"compact-crumb\" href=\""+esc(c.route_path||"")+"\" target=\"_blank\" rel=\"noopener\"><span class=\"compact-platform\">"+esc(c.platform||"")+"</span><span class=\"compact-tag\">"+esc(c.identity_tag?cap(c.identity_tag):"Untitled")+"</span><span class=\"compact-time\">"+time+"</span><span class=\"compact-arrow\">→</span></a>";}
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):"";}
+function esc(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function showLoading(){document.getElementById("trail").innerHTML="<div class=\"state-msg\">Opening your vault…<span>Reading your breadcrumbs</span></div>";}
+function showError(m){document.getElementById("trail").innerHTML="<div class=\"state-msg\">Could not open vault<span>"+esc(m)+"</span></div>";}
+function siMsg(t,type){const el=document.getElementById("si-msg");el.textContent=t;el.className="si-msg "+type;}
+// Credentials now managed via JWT token
+</script>
+<div style="text-align:center;padding:20px;font-family:DM Mono,monospace;font-size:0.6rem;color:var(--mist);letter-spacing:0.08em;border-top:1px solid var(--border);margin-top:40px;">
+  &copy; 2026 Hyph&aelig;lium &middot; All rights reserved &middot;
+  <a href="https://hyphaelium.com/terms.html" style="color:var(--mist)">Terms</a> &middot;
+  <a href="https://hyphaelium.com/privacy-policy.html" style="color:var(--mist)">Privacy</a>
+</div>
+</body>
+</html>
